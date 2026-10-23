@@ -3,6 +3,9 @@ from __future__ import annotations
 import os
 import stat
 
+import pytest
+from sqlalchemy.exc import IntegrityError
+
 from mmc.config.loader import load_app_config
 from mmc.core.results import AnswerResult, CostTotal
 from mmc.records import RunRecord
@@ -46,6 +49,19 @@ def test_db_file_modes(tmp_db) -> None:
     init_db(tmp_db)
     mode = stat.S_IMODE(os.stat(tmp_db).st_mode)
     assert mode == 0o600
+
+
+def test_snapshot_immutable_after_save(repo: RunRepository, stepping_clock, id_factory) -> None:
+    rec = _minimal_record(id_factory(), stepping_clock)
+    repo.save(rec)
+    stored = repo.get(rec.id)
+    assert stored is not None
+    mutated = rec.model_copy(update={"prompt": "mutated prompt must not persist"})
+    with pytest.raises(IntegrityError):
+        repo.save(mutated)
+    after = repo.get(rec.id)
+    assert after == stored
+    assert after.prompt == rec.prompt
 
 
 def test_list_newest_first(repo: RunRepository, stepping_clock, id_factory) -> None:

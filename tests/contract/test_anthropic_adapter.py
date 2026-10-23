@@ -14,8 +14,9 @@ from mmc.providers.base import ProviderRequest
 @pytest.mark.asyncio
 async def test_ok_fixture_stream(fixtures_dir: Path) -> None:
     fixture = fixtures_dir / "recorded" / "anthropic" / "ok.sse"
-    if not fixture.exists():
-        pytest.skip("recorded fixture not present")
+    meta = fixtures_dir / "recorded" / "anthropic" / "ok.meta.json"
+    assert fixture.is_file()
+    assert meta.is_file()
 
     async def handler(request: httpx2.Request) -> httpx2.Response:
         body = fixture.read_bytes()

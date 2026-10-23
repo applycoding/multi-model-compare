@@ -218,7 +218,7 @@ class MockProvider(Provider):
         )
 
     async def _judge_stream(self, req: ProviderRequest, behavior: MockBehavior, rid: str) -> AsyncIterator[StreamEvent]:
-        if behavior == "judge_bad_json_once" and req.request_tag.endswith("/judge/1"):
+        if behavior == "judge_bad_json_once" and req.request_tag.endswith("/judge/0"):
             yield TextDelta(text="This is not JSON at all.")
             yield StreamEnd(outcome="ok", finish_reason="stop", request_id=rid, usage=None)
             return

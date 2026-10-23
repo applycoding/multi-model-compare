@@ -92,14 +92,17 @@ class GoogleProvider(Provider):
             "SPII",
             "IMAGE_SAFETY",
         }
-        if finish_reason in blocked:
+        reason_name = str(finish_reason)
+        if reason_name.startswith("FinishReason."):
+            reason_name = reason_name.split(".", 1)[1]
+        if reason_name in blocked:
             outcome = "blocked"
-        elif finish_reason == "STOP":
+        elif reason_name == "STOP":
             outcome = "ok"
-        elif finish_reason == "MAX_TOKENS":
+        elif reason_name == "MAX_TOKENS":
             outcome = "incomplete"
         else:
-            raise ProviderError("unknown", finish_reason)
+            raise ProviderError("unknown", reason_name)
 
         usage = None
         if usage_meta:
@@ -121,7 +124,7 @@ class GoogleProvider(Provider):
             )
         yield StreamEnd(
             outcome=outcome,
-            finish_reason=finish_reason,
+            finish_reason=reason_name,
             request_id=None,
             usage=usage,
         )
