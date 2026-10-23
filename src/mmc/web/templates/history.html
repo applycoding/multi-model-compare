@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>History</h2>
+<form method="get" action="/history" class="history-toolbar">
+  <input class="text-input history-search" name="q" value="{{ q }}" placeholder="Search prompts">
+  <button type="submit" class="secondary-btn">Search</button>
+</form>
+<ul>
+{% for run in runs %}
+  <li><a href="/runs/{{ run.id }}">{{ run.created_at | format_local_datetime }}: {{ run.prompt_preview }}</a> ({{ run.status }})</li>
+{% endfor %}
+</ul>
+<form method="post" action="/history/clear" class="history-clear-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <button type="submit" class="danger-btn">Clear all</button>
+</form>
+{% endblock %}

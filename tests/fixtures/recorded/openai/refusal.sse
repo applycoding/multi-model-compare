@@ -1,0 +1,18 @@
+event: response.created
+data: {"type":"response.created","response":{"id":"resp_synthetic_01","object":"response","status":"in_progress","output":[]}}
+
+event: response.output_item.added
+data: {"type":"response.output_item.added","output_index":0,"item":{"type":"message","id":"msg_synthetic_01","role":"assistant","status":"in_progress","content":[]}}
+
+event: response.content_part.added
+data: {"type":"response.content_part.added","output_index":0,"content_index":0,"part":{"type":"refusal","text":"","annotations":[]}}
+
+event: response.refusal.delta
+data: {"type":"response.refusal.delta","output_index":0,"content_index":0,"delta":"I cannot help with that."}
+
+event: response.output_item.done
+data: {"type":"response.output_item.done","output_index":0,"item":{"type":"message","id":"msg_synthetic_01","role":"assistant","status":"completed","content":[{"type":"refusal","text":"I cannot help with that.","annotations":[]}]}}
+
+event: response.completed
+data: {"type":"response.completed","response":{"id":"resp_synthetic_01","object":"response","status":"completed","output":[],"usage":{"input_tokens":5,"output_tokens":6,"total_tokens":11}}}
+

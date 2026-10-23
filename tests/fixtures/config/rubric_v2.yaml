@@ -1,0 +1,11 @@
+version: 2
+name: scenario-v2
+scale_min: 1
+scale_max: 5
+criteria:
+  - key: accuracy
+    weight: "0.50"
+    description: Updated rubric criterion for rename scenario tests.
+  - key: brevity
+    weight: "0.50"
+    description: Concise answers without losing meaning.

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Run {{ record.id }}</h2>
+<p>Profile: {{ record.profile }} | Seed: {{ record.seed }}</p>
+{% if record.judge %}
+<p>Judge: <strong>{{ record.judge.judge.display_name }}</strong> ({{ record.judge.judge.key }}), status {{ record.judge.status }}, attempts {{ record.judge.attempts|length }}</p>
+{% if record.judge.excluded %}
+<p class="judge-exclusions">Excluded from judging:
+  {% for model_key, reason in record.judge.excluded.items() %}
+  <span class="badge">{{ model_key }}: {{ reason }}</span>
+  {% endfor %}
+</p>
+{% endif %}
+{% endif %}
+<pre class="prompt">{{ record.prompt }}</pre>
+{% include "_answers_table.html" %}
+<form method="post" action="/runs/{{ record.id }}/delete">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <button type="submit" class="danger-btn">Delete run</button>
+</form>
+<p><a href="/runs/{{ record.id }}/export.json">Export JSON</a> | <a href="/runs/{{ record.id }}/export.csv">Export CSV</a></p>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+  "chunks": [
+    {
+      "response": {
+        "id": "resp_xai",
+        "finish_reason": "max_tokens",
+        "usage": {
+          "prompt_tokens": 5,
+          "completion_tokens": 6,
+          "reasoning_tokens": 0,
+          "total_tokens": 11
+        }
+      },
+      "chunk": {
+        "content": "Hello xAI"
+      }
+    }
+  ]
+}

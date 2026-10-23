@@ -1,0 +1,17 @@
+{
+  "chunks": [
+    {
+      "response": {
+        "id": "resp_synthetic_xai_ok",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 5,
+          "completion_tokens": 6,
+          "reasoning_tokens": 0,
+          "total_tokens": 11
+        }
+      },
+      "chunk": { "content": "Hello from synthetic xAI ok fixture." }
+    }
+  ]
+}

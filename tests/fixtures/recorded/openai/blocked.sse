@@ -1,0 +1,18 @@
+event: response.created
+data: {"type":"response.created","response":{"id":"resp_synthetic_01","object":"response","status":"in_progress","output":[]}}
+
+event: response.output_item.added
+data: {"type":"response.output_item.added","output_index":0,"item":{"type":"message","id":"msg_synthetic_01","role":"assistant","status":"in_progress","content":[]}}
+
+event: response.content_part.added
+data: {"type":"response.content_part.added","output_index":0,"content_index":0,"part":{"type":"output_text","text":"","annotations":[]}}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","output_index":0,"content_index":0,"delta":"Hello from synthetic OpenAI fixture."}
+
+event: response.output_item.done
+data: {"type":"response.output_item.done","output_index":0,"item":{"type":"message","id":"msg_synthetic_01","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Hello from synthetic OpenAI fixture.","annotations":[]}]}}
+
+event: response.incomplete
+data: {"type":"response.incomplete","response":{"id":"resp_synthetic_01","status":"incomplete","incomplete_details":{"reason":"content_filter"}}}
+

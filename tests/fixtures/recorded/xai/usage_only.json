@@ -1,0 +1,34 @@
+{
+  "chunks": [
+    {
+      "response": {
+        "id": "resp_xai",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 9,
+          "completion_tokens": 2,
+          "reasoning_tokens": 0,
+          "total_tokens": 11
+        }
+      },
+      "chunk": {
+        "content": ""
+      }
+    },
+    {
+      "response": {
+        "id": "resp_xai",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 9,
+          "completion_tokens": 2,
+          "reasoning_tokens": 0,
+          "total_tokens": 11
+        }
+      },
+      "chunk": {
+        "content": "late text"
+      }
+    }
+  ]
+}

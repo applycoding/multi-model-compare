@@ -1,0 +1,9 @@
+title = "mmc gitleaks"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "pytest sentinel fake API keys"
+regexTarget = "match"
+regexes = ['''SENTINEL''']

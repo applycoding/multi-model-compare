@@ -1,0 +1,115 @@
+[project]
+name = "mmc"
+version = "0.1.0"
+description = "Compare multiple LLM models concurrently with structured judging"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "anthropic==2.1.0",
+    "fastapi==0.161.1",
+    "google-genai==2.33.0",
+    "httpx==0.28.1",
+    "httpx2==2.16.0",
+    "jinja2==3.1.6",
+    "openai==3.37.0",
+    "pydantic==2.14.1",
+    "python-multipart==0.0.32",
+    "pyyaml==6.0.3",
+    "sqlmodel==0.0.48",
+    "tiktoken==0.14.0",
+    "uvicorn==0.54.0",
+    "xai-sdk==1.20.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==2.4.0",
+    "playwright==1.64.1",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "pytest-playwright==0.10.0",
+    "ruff==0.17.2",
+]
+
+[project.scripts]
+mmc = "mmc.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "mmc"
+module-root = "src"
+package-data = { "mmc" = ["defaults/*", "web/templates/*", "web/static/*"] }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+extend-exclude = ["PLAN.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/mmc/web/routes_pages.py" = ["B008"]
+"tests/unit/test_judge.py" = ["SIM222"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["yaml"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["mmc.config.yaml_loader"]
+disallow_subclassing_any = false
+
+[[tool.mypy.overrides]]
+module = ["xai_sdk", "xai_sdk.*", "grpc", "grpc.*", "google.genai", "google.genai.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["mmc.providers.*", "mmc.providers.*.*"]
+disable_error_code = ["union-attr", "arg-type", "no-any-return", "override", "assignment"]
+
+[[tool.mypy.overrides]]
+module = [
+    "tests",
+    "tests.*",
+    "tests.*.*",
+    "tests.*.*.*",
+]
+disallow_untyped_defs = false
+disable_error_code = [
+    "arg-type",
+    "assignment",
+    "unused-ignore",
+    "attr-defined",
+    "call-overload",
+    "return-value",
+    "no-untyped-def",
+]
+
+[[tool.mypy.overrides]]
+module = ["mmc.web.security", "mmc.web.app", "mmc.web.routes_pages"]
+disable_error_code = ["arg-type", "assignment", "no-any-return", "no-untyped-def"]
+
+[dependency-groups]
+dev = [
+    "mypy==2.4.0",
+    "playwright==1.64.1",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "pytest-playwright==0.10.0",
+    "ruff==0.17.2",
+]
