@@ -54,3 +54,4 @@ class JudgeOutcome(BaseModel):
     excluded: dict[str, str]
     attempts: list[JudgeAttempt]
     resolved_params: dict[str, str]
+    scores_mock: bool = False

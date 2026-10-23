@@ -5,11 +5,14 @@ import stat
 
 import pytest
 from sqlalchemy.exc import IntegrityError
+from sqlmodel import Session
 
 from mmc.config.loader import load_app_config
 from mmc.core.results import AnswerResult, CostTotal
+from mmc.honesty import apply_profile_honesty
 from mmc.records import RunRecord
 from mmc.storage.repository import RunRepository
+from mmc.storage.tables import RunRow
 
 
 def _minimal_record(run_id: str, stepping_clock) -> RunRecord:
@@ -39,8 +42,19 @@ def _minimal_record(run_id: str, stepping_clock) -> RunRecord:
 def test_save_get_roundtrip(repo: RunRepository, stepping_clock, id_factory) -> None:
     rec = _minimal_record(id_factory(), stepping_clock)
     repo.save(rec)
+    with Session(repo._engine) as session:
+        row = session.get(RunRow, rec.id)
+        assert row is not None
+        assert RunRecord.model_validate_json(row.record_json) == rec
+
+
+def test_get_applies_profile_honesty_for_mock_profile(repo: RunRepository, stepping_clock, id_factory) -> None:
+    rec = _minimal_record(id_factory(), stepping_clock)
+    repo.save(rec)
     got = repo.get(rec.id)
-    assert got == rec
+    assert got is not None
+    assert got == apply_profile_honesty(rec)
+    assert got.pricing_disclosure == "example_pricing_mock"
 
 
 def test_db_file_modes(tmp_db) -> None:

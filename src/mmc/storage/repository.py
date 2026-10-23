@@ -8,6 +8,7 @@ from sqlalchemy import func
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, col, select
 
+from mmc.honesty import apply_profile_honesty
 from mmc.records import RunRecord, RunSummary
 
 
@@ -28,6 +29,7 @@ class RunRepository:
         if record.total.unknown_count:
             flags.append("unknown")
         cost_flags = ",".join(flags)
+        scores_mock = "true" if record.judge and record.judge.scores_mock else "false"
         with Session(self._engine) as session:
             session.add(
                 RunRow(
@@ -44,6 +46,8 @@ class RunRepository:
                     status=record.status,
                     total_known_cost_usd=str(record.total.subtotal_usd),
                     cost_flags=cost_flags,
+                    pricing_disclosure=record.pricing_disclosure,
+                    scores_mock=scores_mock,
                 )
             )
             session.commit()
@@ -55,7 +59,7 @@ class RunRepository:
             row = session.get(RunRow, run_id)
             if row is None:
                 return None
-            return RunRecord.model_validate_json(row.record_json)
+            return apply_profile_honesty(RunRecord.model_validate_json(row.record_json))
 
     def list(self, *, limit: int = 50, offset: int = 0, q: str | None = None) -> list[RunSummary]:
         from mmc.storage.tables import RunSummaryRow
@@ -76,6 +80,8 @@ class RunRepository:
                     status=r.status,
                     total_known_cost_usd=Decimal(r.total_known_cost_usd),
                     cost_flags=[f for f in r.cost_flags.split(",") if f],
+                    pricing_disclosure=r.pricing_disclosure,
+                    scores_mock=r.scores_mock == "true",
                 )
                 for r in rows
             ]
@@ -96,7 +102,7 @@ class RunRepository:
         with Session(self._engine) as session:
             rows = session.exec(select(RunRow).order_by(RunRow.id)).all()
             for row in rows:
-                yield RunRecord.model_validate_json(row.record_json)
+                yield apply_profile_honesty(RunRecord.model_validate_json(row.record_json))
 
     def delete(self, run_id: str) -> bool:
         from mmc.storage.tables import RunRow, RunSummaryRow

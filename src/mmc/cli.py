@@ -13,7 +13,7 @@ from mmc.config.schemas import AppConfig
 from mmc.core.request import RequestValidationError, RunRequest, resolve_request
 from mmc.core.tokens import TokenEstimator
 from mmc.disclosure import cli_run_disclosure
-from mmc.display import format_local_datetime, format_ms_rounded
+from mmc.display import format_answer_cost_usd, format_local_datetime, format_ms_rounded, mock_pricing_label
 from mmc.export import to_csv, to_json
 from mmc.logging_setup import configure_logging
 from mmc.providers.registry import ProviderRegistry
@@ -144,13 +144,22 @@ def _cmd_run(
         for ans in record.answers:
             ttft = format_ms_rounded(ans.timing.ttft_ms if ans.timing else None) or None
             total_ms = format_ms_rounded(ans.timing.total_ms if ans.timing else None) or None
-            cost_usd = ans.cost.total_usd if ans.cost and ans.cost.total_usd is not None else None
+            cost_display = (
+                format_answer_cost_usd(record, ans.cost.total_usd)
+                if ans.cost and ans.cost.total_usd is not None
+                else "n/a"
+            )
+            label = mock_pricing_label(record)
+            if label and cost_display != "n/a":
+                cost_display = f"{cost_display} ({label})"
             print(
                 f"{ans.model.key}\t{ans.status}\t"
-                f"ttft_ms={ttft}\ttotal_ms={total_ms}\tcost_usd={cost_usd}\t"
+                f"ttft_ms={ttft}\ttotal_ms={total_ms}\tcost_usd={cost_display}\t"
                 f"{ans.text[:80]}"
             )
         if record.judge:
+            if record.judge.scores_mock:
+                print("judge_scores_mock\ttrue\tdeterministic mock scores (sha256), not a live judge")
             for model_key, scores in sorted(record.judge.scores.items()):
                 crit = ",".join(f"{k}={v.score}" for k, v in sorted(scores.criteria.items()))
                 print(f"judge_score\t{model_key}\toverall={scores.overall}\t{crit}")

@@ -24,6 +24,15 @@ def test_run_prints_scores_and_timing(capsys, tmp_db, monkeypatch) -> None:
     assert "judge_score" in out
 
 
+def test_run_cli_labels_mock_pricing_and_judge_scores(capsys, tmp_db, monkeypatch) -> None:
+    monkeypatch.setenv("MMC_DB_PATH", str(tmp_db))
+    code = main(["run", "cli honesty labels", "--seed", "9"])
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "cost_usd=$0 (example pricing (mock))" in out
+    assert "judge_scores_mock\ttrue\tdeterministic mock scores" in out
+
+
 def test_run_validation_error_stderr(capsys, tmp_db, monkeypatch) -> None:
     monkeypatch.setenv("MMC_DB_PATH", str(tmp_db))
     code = main(["run", ""])

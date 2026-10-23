@@ -5,9 +5,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -24,7 +26,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -71,9 +73,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -90,7 +94,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -137,9 +141,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -156,7 +162,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -203,9 +209,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -222,7 +230,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -276,9 +284,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -295,7 +305,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -428,6 +438,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -453,6 +464,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -547,7 +559,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.001928",
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -561,9 +573,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -580,7 +594,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -627,9 +641,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -646,7 +662,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -693,9 +709,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -712,7 +730,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -759,9 +777,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -778,7 +798,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -832,9 +852,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -851,7 +873,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -1009,6 +1031,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -1034,6 +1057,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -1128,7 +1152,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.001928",
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -1142,9 +1166,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000010",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1161,7 +1187,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000130"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -1208,11 +1234,12 @@
         },
         {
           "cost": {
-            "input_usd": "0.000010",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000002",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1229,7 +1256,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000012"
+            "total_usd": "0"
           },
           "error": {
             "kind": "timeout",
@@ -1276,9 +1303,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000010",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1295,7 +1324,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000130"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -1342,9 +1371,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000010",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1361,7 +1392,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000130"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -1415,9 +1446,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -1434,7 +1467,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -1541,6 +1574,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -1566,6 +1600,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -1659,8 +1694,8 @@
       "seed": 20261023,
       "status": "completed",
       "total": {
-        "estimated": true,
-        "subtotal_usd": "0.001802",
+        "estimated": false,
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -1674,9 +1709,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000015",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1693,7 +1730,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000135"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -1740,9 +1777,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000015",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1759,7 +1798,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000135"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -1806,9 +1845,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000015",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1825,7 +1866,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000135"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -1872,11 +1913,12 @@
         },
         {
           "cost": {
-            "input_usd": "0.000015",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000000",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -1893,7 +1935,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000015"
+            "total_usd": "0"
           },
           "error": {
             "kind": "rate_limit",
@@ -1947,9 +1989,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -1966,7 +2010,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -2073,6 +2117,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -2098,6 +2143,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -2191,8 +2237,8 @@
       "seed": 20261023,
       "status": "completed",
       "total": {
-        "estimated": true,
-        "subtotal_usd": "0.001820",
+        "estimated": false,
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -2206,9 +2252,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -2225,7 +2273,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -2272,9 +2320,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -2291,7 +2341,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -2338,9 +2388,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -2357,7 +2409,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -2444,9 +2496,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -2463,7 +2517,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -2570,6 +2624,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -2595,6 +2650,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -2678,7 +2734,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.001793",
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -2692,11 +2748,12 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000011",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000156",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -2713,7 +2770,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000167"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -2757,9 +2814,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -2776,7 +2835,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -2823,9 +2882,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -2842,7 +2903,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -2889,9 +2950,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -2908,7 +2971,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -2962,9 +3025,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -2981,7 +3046,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -3114,6 +3179,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -3139,6 +3205,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -3232,8 +3299,8 @@
       "seed": 20261023,
       "status": "completed",
       "total": {
-        "estimated": true,
-        "subtotal_usd": "0.001960",
+        "estimated": false,
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -3247,9 +3314,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3266,7 +3335,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "refused",
@@ -3313,9 +3382,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3332,7 +3403,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "blocked",
@@ -3379,9 +3450,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3398,7 +3471,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "incomplete",
@@ -3445,9 +3518,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3464,7 +3539,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -3518,9 +3593,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -3537,7 +3614,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -3618,6 +3695,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -3643,6 +3721,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -3737,7 +3816,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.001924",
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -3751,11 +3830,12 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000011",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000156",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3772,7 +3852,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000167"
+            "total_usd": "0"
           },
           "error": {
             "kind": "protocol",
@@ -3819,9 +3899,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3838,7 +3920,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -3885,9 +3967,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3904,7 +3988,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -3951,9 +4035,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -3970,7 +4056,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -4024,9 +4110,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -4043,7 +4131,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -4150,6 +4238,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -4175,6 +4264,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -4268,8 +4358,8 @@
       "seed": 20261023,
       "status": "completed",
       "total": {
-        "estimated": true,
-        "subtotal_usd": "0.001960",
+        "estimated": false,
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -4283,9 +4373,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000010",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -4302,7 +4394,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000130"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -4349,9 +4441,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000010",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -4368,7 +4462,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000130"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -4415,9 +4509,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000010",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -4434,7 +4530,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000130"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -4481,9 +4577,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000010",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -4500,7 +4598,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000130"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -4554,11 +4652,12 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.000379",
+              "input_usd": "0",
               "notes": [
-                "estimated tokens"
+                "estimated tokens",
+                "example pricing (mock)"
               ],
-              "output_usd": "0.000012",
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -4575,7 +4674,7 @@
                 "tier": "base"
               },
               "status": "estimated",
-              "total_usd": "0.000391"
+              "total_usd": "0"
             },
             "error": "Expecting value: line 1 column 1 (char 0)",
             "finish_reason": "stop",
@@ -4597,9 +4696,11 @@
           {
             "attempt_no": 2,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -4616,7 +4717,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -4749,6 +4850,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -4774,6 +4876,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -4867,8 +4970,8 @@
       "seed": 20261023,
       "status": "completed",
       "total": {
-        "estimated": true,
-        "subtotal_usd": "0.002311",
+        "estimated": false,
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -4882,9 +4985,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -4901,7 +5006,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -4948,9 +5053,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -4967,7 +5074,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -5014,9 +5121,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -5033,7 +5142,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -5080,9 +5189,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000011",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -5099,7 +5210,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000131"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -5153,11 +5264,12 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.000374",
+              "input_usd": "0",
               "notes": [
-                "estimated tokens"
+                "estimated tokens",
+                "example pricing (mock)"
               ],
-              "output_usd": "0.000006",
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -5174,7 +5286,7 @@
                 "tier": "base"
               },
               "status": "estimated",
-              "total_usd": "0.000380"
+              "total_usd": "0"
             },
             "error": "Expecting value: line 1 column 1 (char 0)",
             "finish_reason": "stop",
@@ -5196,11 +5308,12 @@
           {
             "attempt_no": 2,
             "cost": {
-              "input_usd": "0.000390",
+              "input_usd": "0",
               "notes": [
-                "estimated tokens"
+                "estimated tokens",
+                "example pricing (mock)"
               ],
-              "output_usd": "0.000006",
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -5217,7 +5330,7 @@
                 "tier": "base"
               },
               "status": "estimated",
-              "total_usd": "0.000396"
+              "total_usd": "0"
             },
             "error": "Expecting value: line 1 column 1 (char 0)",
             "finish_reason": "stop",
@@ -5239,11 +5352,12 @@
           {
             "attempt_no": 3,
             "cost": {
-              "input_usd": "0.000390",
+              "input_usd": "0",
               "notes": [
-                "estimated tokens"
+                "estimated tokens",
+                "example pricing (mock)"
               ],
-              "output_usd": "0.000006",
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -5260,7 +5374,7 @@
                 "tier": "base"
               },
               "status": "estimated",
-              "total_usd": "0.000396"
+              "total_usd": "0"
             },
             "error": "Expecting value: line 1 column 1 (char 0)",
             "finish_reason": "stop",
@@ -5311,6 +5425,7 @@
           "temperature": "0.0"
         },
         "scores": {},
+        "scores_mock": true,
         "seed": 20261023,
         "status": "invalid_output"
       },
@@ -5336,6 +5451,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -5429,8 +5545,8 @@
       "seed": 20261023,
       "status": "completed",
       "total": {
-        "estimated": true,
-        "subtotal_usd": "0.001696",
+        "estimated": false,
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -5444,11 +5560,12 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000007",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000000",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -5465,7 +5582,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000007"
+            "total_usd": "0"
           },
           "error": {
             "kind": "server",
@@ -5512,11 +5629,12 @@
         },
         {
           "cost": {
-            "input_usd": "0.000007",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000000",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -5533,7 +5651,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000007"
+            "total_usd": "0"
           },
           "error": {
             "kind": "server",
@@ -5580,11 +5698,12 @@
         },
         {
           "cost": {
-            "input_usd": "0.000007",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000000",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -5601,7 +5720,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000007"
+            "total_usd": "0"
           },
           "error": {
             "kind": "server",
@@ -5648,11 +5767,12 @@
         },
         {
           "cost": {
-            "input_usd": "0.000007",
+            "input_usd": "0",
             "notes": [
-              "estimated tokens"
+              "estimated tokens",
+              "example pricing (mock)"
             ],
-            "output_usd": "0.000000",
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -5669,7 +5789,7 @@
               "tier": "base"
             },
             "status": "estimated",
-            "total_usd": "0.000007"
+            "total_usd": "0"
           },
           "error": {
             "kind": "server",
@@ -5748,6 +5868,7 @@
         "label_map": {},
         "resolved_params": {},
         "scores": {},
+        "scores_mock": true,
         "seed": 20261023,
         "status": "skipped_no_answers"
       },
@@ -5773,6 +5894,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -5855,8 +5977,8 @@
       "seed": 20261023,
       "status": "completed",
       "total": {
-        "estimated": true,
-        "subtotal_usd": "0.000028",
+        "estimated": false,
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -5894,6 +6016,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [],
       "pricing_version": "2026-10-23",
       "profile": "mock",
@@ -5946,9 +6069,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -5965,7 +6090,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6012,9 +6137,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -6031,7 +6158,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6078,9 +6205,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -6097,7 +6226,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6144,9 +6273,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -6163,7 +6294,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6217,9 +6348,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.002000",
-              "notes": [],
-              "output_usd": "0.000800",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -6236,7 +6369,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.002800"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -6369,6 +6502,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -6394,6 +6528,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -6488,7 +6623,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.003856",
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -6502,9 +6637,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000003",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -6521,7 +6658,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000123"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6568,9 +6705,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000003",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -6587,7 +6726,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000123"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6634,9 +6773,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000003",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -6653,7 +6794,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000123"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6700,9 +6841,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000003",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -6719,7 +6862,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000123"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -6773,9 +6916,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -6792,7 +6937,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -6895,6 +7040,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -6920,6 +7066,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -7004,7 +7151,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.001892",
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
@@ -7018,9 +7165,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7037,7 +7186,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7084,9 +7233,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7103,7 +7254,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7150,9 +7301,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7169,7 +7322,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7216,9 +7369,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000012",
-            "notes": [],
-            "output_usd": "0.000120",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7235,7 +7390,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000132"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7284,7 +7439,8 @@
           "cost": {
             "input_usd": null,
             "notes": [
-              "no pricing entry for mock:mock-unpriced on 2026-10-23"
+              "no pricing entry for mock:mock-unpriced on 2026-10-23",
+              "example pricing (mock)"
             ],
             "output_usd": null,
             "price": null,
@@ -7343,9 +7499,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.001000",
-              "notes": [],
-              "output_usd": "0.000400",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -7362,7 +7520,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.001400"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -7482,6 +7640,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -7507,6 +7666,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -7591,7 +7751,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.001928",
+        "subtotal_usd": "0",
         "unknown_count": 1
       },
       "vendors_contacted": [
@@ -7605,9 +7765,11 @@
       "answers": [
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7624,7 +7786,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7671,9 +7833,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7690,7 +7854,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7737,9 +7901,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7756,7 +7922,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7803,9 +7969,11 @@
         },
         {
           "cost": {
-            "input_usd": "0.000024",
-            "notes": [],
-            "output_usd": "0.000240",
+            "input_usd": "0",
+            "notes": [
+              "example pricing (mock)"
+            ],
+            "output_usd": "0",
             "price": {
               "entry": {
                 "basis": "exact",
@@ -7822,7 +7990,7 @@
               "tier": "base"
             },
             "status": "known",
-            "total_usd": "0.000264"
+            "total_usd": "0"
           },
           "error": null,
           "finish_reason": "stop",
@@ -7876,9 +8044,11 @@
           {
             "attempt_no": 1,
             "cost": {
-              "input_usd": "0.002000",
-              "notes": [],
-              "output_usd": "0.000800",
+              "input_usd": "0",
+              "notes": [
+                "example pricing (mock)"
+              ],
+              "output_usd": "0",
               "price": {
                 "entry": {
                   "basis": "exact",
@@ -7895,7 +8065,7 @@
                 "tier": "base"
               },
               "status": "known",
-              "total_usd": "0.002800"
+              "total_usd": "0"
             },
             "error": null,
             "finish_reason": "stop",
@@ -8028,6 +8198,7 @@
             "self_judged": false
           }
         },
+        "scores_mock": true,
         "seed": 20261023,
         "status": "ok"
       },
@@ -8053,6 +8224,7 @@
         "temperature": 0.0,
         "timeout_s": 120.0
       },
+      "pricing_disclosure": "example_pricing_mock",
       "pricing_entries_used": [
         {
           "basis": "exact",
@@ -8147,7 +8319,7 @@
       "status": "completed",
       "total": {
         "estimated": false,
-        "subtotal_usd": "0.003856",
+        "subtotal_usd": "0",
         "unknown_count": 0
       },
       "vendors_contacted": [
