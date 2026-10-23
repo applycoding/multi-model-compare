@@ -33,9 +33,7 @@ def register_security_middleware(app: FastAPI, settings: Settings, config: AppCo
     max_body = config.limits.max_body_bytes
 
     @app.middleware("http")
-    async def security_middleware(
-        request: Request, call_next: Callable[[Request], Awaitable[Response]]
-    ) -> Response:
+    async def security_middleware(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         host = request.headers.get("host", "").split(":")[0]
         if host not in settings.allowed_hosts:
             return JSONResponse({"detail": "invalid host"}, status_code=400)
