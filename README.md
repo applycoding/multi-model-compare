@@ -9,7 +9,7 @@ Open-source **portfolio demo** (MIT) by Arpan Bom ([@applycoding](https://github
 
 ## What it does
 
-- Concurrent compare (1–8 models) through a single `Provider` interface (Claude, OpenAI, Gemini, Grok, or deterministic mocks).
+- Concurrent compare (1-8 models) through a single `Provider` interface (Claude, OpenAI, Gemini, Grok, or deterministic mocks).
 - LLM-as-judge with YAML rubric, label shuffling, identity redaction, and native structured output per vendor.
 - Honest cost flags (`known` / `estimated` / `unknown`), latency (TTFT + total), and token provenance.
 - Versioned SQLite snapshots, history, export (JSON/CSV), and delete/clear.
@@ -33,7 +33,7 @@ cp .env.example .env
 uv run --env-file .env mmc serve
 ```
 
-Providers without a key are **skipped**. Live profile contestants: Claude Sonnet 5.5, GPT-6.1 Sol, Gemini 3.8 Flash, Grok 4.7; judge: Gemini 4 Argon (Gemini answers are not judged by default unless `allow_self_judging` is on).
+Providers without a key are **skipped**. Default live profile contestants use **placeholder** `model_id` values in `models.yaml`; replace them with IDs from vendor docs before calling APIs ([MODEL_IDS.md](docs/MODEL_IDS.md)). Gemini answers are not judged by the default Gemini judge unless `allow_self_judging` is on.
 
 **Docker (local build only):**
 
@@ -80,6 +80,8 @@ flowchart LR
 
 In **mock** profile the CLI and UI state: **Mock mode: nothing is sent to any provider** (no live vendor calls).
 
+**Mock costs and judge scores:** dollar amounts are stored and shown as **$0** with the label `example pricing (mock)` in the UI, API (`pricing_disclosure: example_pricing_mock`), and CLI. Mock judge scores are deterministic hashes (`scores_mock: true`); they are labeled as fake in the UI and API, not real evaluations. `pricing.yaml` rates are **illustrative**; verify `source_url` before `MMC_PROFILE=live`. See [docs/MODEL_IDS.md](docs/MODEL_IDS.md) for live `model_id` configuration.
+
 ## Configuration
 
 Copy `src/mmc/defaults/` or set `MMC_CONFIG_DIR` to override `models.yaml`, `rubric.yaml`, and `pricing.yaml`.
@@ -93,11 +95,11 @@ Copy `src/mmc/defaults/` or set `MMC_CONFIG_DIR` to override `models.yaml`, `rub
 | `MMC_ALLOWED_HOSTS` | Extra Host allowlist entries (comma-separated) |
 | `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `XAI_API_KEY` | Live providers only |
 
-**Pricing:** effective-dated entries in `pricing.yaml`; Grok long-context above 200k tokens uses a separate tier (marked **estimated** in UI when unverified). Haiku uses `basis: from` (lower-bound, shown as estimated). xAI reasoning-token billing is **estimated** unless `reasoning_tokens_additive` is enabled and verified against fixtures.
+**Pricing (live profile):** `pricing.yaml` entries are illustrative placeholders with `source_url` and `retrieved_on`; **TODO: verify** against vendor pages before trusting cost output. Grok long-context above 200k tokens uses a separate tier (marked **estimated** when unverified). Haiku uses `basis: from` (lower-bound). xAI reasoning-token billing is **estimated** unless `reasoning_tokens_additive` is verified.
 
 ## Judging
 
-Eligible `ok` answers (and `incomplete` when configured) are shuffled to labels A–H, redacted, and sent to the judge as JSON (not delimiter text). The judge uses structured output per provider; temperature 0 where supported (omitted for Claude). Same-vendor answers are excluded unless `allow_self_judging` is on.
+Eligible `ok` answers (and `incomplete` when configured) are shuffled to labels A-H, redacted, and sent to the judge as JSON (not delimiter text). The judge uses structured output per provider; temperature 0 where supported (omitted for Claude). Same-vendor answers are excluded unless `allow_self_judging` is on. In mock profile, judge scores are deterministic and flagged `scores_mock`.
 
 **Known limits:** prompt injection and position/style bias are reduced, not eliminated.
 
@@ -129,7 +131,7 @@ Synthetic contract fixtures live under `tests/fixtures/recorded/` (see README th
 
 ## CI
 
-Five jobs on `ubuntu-24.04`: gitleaks + ruff, mypy, unit/contract/scenario tests, Playwright e2e, Docker build + `scripts/smoke.py`. Actions are pinned by full SHA; `permissions: contents: read`.
+Five jobs on `ubuntu-24.04`: gitleaks + ruff, mypy, unit/contract/scenario tests (`pytest --ignore=tests/e2e`), **Playwright e2e** (`pytest tests/e2e` after `playwright install --with-deps chromium`), Docker build + `scripts/smoke.py`. E2e runs on every PR and push to `main`. Actions are pinned by full SHA; `permissions: contents: read`.
 
 ## Tutorial
 

@@ -3,6 +3,33 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+_UNICODE_DASHES = re.compile(r"[\u2013\u2014]")
+
+
+def test_readme_and_docs_use_plain_dashes_not_en_em() -> None:
+    paths = [Path("README.md"), *Path("docs").rglob("*.md")]
+    for path in paths:
+        text = path.read_text(encoding="utf-8")
+        assert _UNICODE_DASHES.search(text) is None, f"unicode dash in {path}"
+
+
+def test_pricing_yaml_marked_illustrative() -> None:
+    text = Path("src/mmc/defaults/pricing.yaml").read_text(encoding="utf-8")
+    assert "ILLUSTRATIVE" in text
+    assert "TODO: verify" in text
+
+
+def test_models_yaml_points_at_model_ids_doc() -> None:
+    text = Path("src/mmc/defaults/models.yaml").read_text(encoding="utf-8")
+    assert "MODEL_IDS.md" in text
+
+
+def test_ci_runs_playwright_e2e_job() -> None:
+    ci = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert "e2e:" in ci
+    assert "playwright install" in ci
+    assert "pytest tests/e2e" in ci
+
 
 def test_docker_run_loopback_in_readme() -> None:
     text = Path("README.md").read_text(encoding="utf-8")

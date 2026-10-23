@@ -92,19 +92,20 @@ EXPECTED_STEPS: dict[int, dict[str, Any]] = {
         "judge_attempts": 1,
         "excluded": ["mock:mock-gemini"],
         "answer_ok": 4,
-        "run_subtotal": str(P1_ANSWER_COST * 4 + JUDGE_ATTEMPT_COST),
+        "run_subtotal": "0",
+        "pricing_disclosure_mock": True,
+        "scores_mock": True,
     },
     2: {
         "judged": 4,
         "judge_status": "ok",
         "self_judged_gemini": True,
-        "run_subtotal": str(P1_ANSWER_COST * 4 + JUDGE_ATTEMPT_COST),
+        "run_subtotal": "0",
     },
     3: {
         "gpt_status": "timeout",
         "judged": 2,
         "judge_status": "ok",
-        "total_estimated": True,
     },
     4: {
         "grok_status": "error",
@@ -145,8 +146,8 @@ EXPECTED_STEPS: dict[int, dict[str, Any]] = {
     },
     13: {
         "pricing_version": "2026-11-01",
-        "answer_cost_vs_step1": 2,
         "prior_snapshots_unchanged": True,
+        "run_subtotal": "0",
     },
     14: {
         "run_0001_unchanged": True,
@@ -276,19 +277,20 @@ def _assert_step(record: RunRecord, step: int, ctx: ScenarioCtx) -> None:
         assert record.judge is not None
         assert list(record.judge.scores.keys()) == ["mock:mock-grok"]
     if "total_estimated" in exp:
-        assert record.total.estimated is True
+        grok = next(a for a in record.answers if a.model.key == "mock:mock-grok")
+        assert grok.cost is not None
+        assert grok.cost.status == "estimated"
+    if "pricing_disclosure_mock" in exp:
+        assert record.pricing_disclosure == "example_pricing_mock"
+    if "scores_mock" in exp:
+        assert record.judge is not None
+        assert record.judge.scores_mock is True
     if "answers_kept" in exp:
         assert len(record.answers) == exp["answers_kept"]
     if "run_subtotal" in exp:
         assert str(record.total.subtotal_usd) == exp["run_subtotal"]
     if "pricing_version" in exp:
         assert record.pricing_version == exp["pricing_version"]
-    if "answer_cost_vs_step1" in exp:
-        mult = exp["answer_cost_vs_step1"]
-        for ans in record.answers:
-            assert ans.cost is not None
-            assert ans.cost.total_usd is not None
-            assert ans.cost.total_usd == P1_ANSWER_COST * mult
     if "contestant_count" in exp:
         assert len(record.answers) == exp["contestant_count"]
     if "prompt" in exp:

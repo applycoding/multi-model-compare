@@ -31,6 +31,7 @@ class RunRecord(BaseModel):
     answers: list[AnswerResult]
     judge: JudgeOutcome | None
     total: CostTotal
+    pricing_disclosure: Literal["live", "example_pricing_mock"] = "live"
 
 
 class RunSummary(BaseModel):

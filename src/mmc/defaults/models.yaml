@@ -1,3 +1,5 @@
+# Live profile model_id values are configurable placeholders for this demo.
+# See docs/MODEL_IDS.md: set model_id from each vendor's current docs before MMC_PROFILE=live.
 providers:
   anthropic:
     env_var: ANTHROPIC_API_KEY
