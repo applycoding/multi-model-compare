@@ -7,46 +7,47 @@ import pytest
 from mmc.providers.base import ProviderError, StreamEnd
 from tests.contract.conftest import normalize_stream_events, stream_recorded_fixture
 
-# (vendor, fixture_name, expected_outcome | None, expect_error)
-_CATALOG: list[tuple[str, str, str | None, bool]] = [
-    ("anthropic", "ok", "ok", False),
-    ("anthropic", "refusal", "refused", False),
-    ("anthropic", "incomplete", "incomplete", False),
-    ("anthropic", "truncation", "incomplete", False),
-    ("anthropic", "error", None, True),
-    ("anthropic", "missing_terminal", None, True),
-    ("anthropic", "judge", "ok", False),
-    ("openai", "ok", "ok", False),
-    ("openai", "refusal", "refused", False),
-    ("openai", "incomplete", "incomplete", False),
-    ("openai", "truncation", "incomplete", False),
-    ("openai", "blocked", "blocked", False),
-    ("openai", "error", None, True),
-    ("openai", "missing_terminal", "ok", False),
-    ("openai", "judge", "ok", False),
-    ("google", "ok", "ok", False),
-    ("google", "blocked", "blocked", False),
-    ("google", "incomplete", "incomplete", False),
-    ("google", "truncation", "incomplete", False),
-    ("google", "missing_terminal", None, True),
-    ("google", "usage_only", "ok", False),
-    ("google", "reasoning_only", "incomplete", False),
-    ("google", "error", None, True),
-    ("google", "judge", "ok", False),
-    ("xai", "ok", "ok", False),
-    ("xai", "blocked", "blocked", False),
-    ("xai", "incomplete", "incomplete", False),
-    ("xai", "truncation", "incomplete", False),
-    ("xai", "missing_terminal", None, True),
-    ("xai", "usage_only", "ok", False),
-    ("xai", "reasoning", "ok", False),  # reasoning.json (billing_estimated)
-    ("xai", "judge", "ok", False),
+# vendor, fixture_name, expected_outcome (if success), error_kind (if ProviderError expected)
+_CATALOG: list[tuple[str, str, str | None, str | None]] = [
+    ("anthropic", "ok", "ok", None),
+    ("anthropic", "refusal", "refused", None),
+    ("anthropic", "incomplete", "incomplete", None),
+    ("anthropic", "truncation", "incomplete", None),
+    ("anthropic", "error", None, "server"),
+    ("anthropic", "missing_terminal", None, "server"),
+    ("anthropic", "judge", "ok", None),
+    ("openai", "ok", "ok", None),
+    ("openai", "refusal", "refused", None),
+    ("openai", "incomplete", "incomplete", None),
+    ("openai", "truncation", "incomplete", None),
+    ("openai", "blocked", "blocked", None),
+    ("openai", "error", None, "server"),
+    ("openai", "missing_terminal", None, "protocol"),
+    ("openai", "judge", "ok", None),
+    ("google", "ok", "ok", None),
+    ("google", "blocked", "blocked", None),
+    ("google", "incomplete", "incomplete", None),
+    ("google", "truncation", "incomplete", None),
+    ("google", "missing_terminal", None, "protocol"),
+    ("google", "usage_only", "ok", None),
+    ("google", "reasoning_only", "incomplete", None),
+    ("google", "error", None, "server"),
+    ("google", "judge", "ok", None),
+    ("xai", "ok", "ok", None),
+    ("xai", "blocked", "blocked", None),
+    ("xai", "incomplete", "incomplete", None),
+    ("xai", "truncation", "incomplete", None),
+    ("xai", "missing_terminal", None, "protocol"),
+    ("xai", "usage_only", "ok", None),
+    ("xai", "reasoning", "ok", None),
+    ("xai", "error", None, "server"),
+    ("xai", "judge", "ok", None),
 ]
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    ("vendor", "name", "expected_outcome", "expect_error"),
+    ("vendor", "name", "expected_outcome", "error_kind"),
     _CATALOG,
     ids=[f"{v}-{n}" for v, n, _, _ in _CATALOG],
 )
@@ -55,16 +56,17 @@ async def test_recorded_fixture_stream(
     vendor: str,
     name: str,
     expected_outcome: str | None,
-    expect_error: bool,
+    error_kind: str | None,
 ) -> None:
     judge = name == "judge"
     fixture_path = recorded_dir / vendor / (f"{name}.sse" if vendor in ("anthropic", "openai") else f"{name}.json")
     assert fixture_path.is_file()
     assert (recorded_dir / vendor / f"{name}.meta.json").is_file()
 
-    if expect_error:
-        with pytest.raises((ProviderError, Exception)):
+    if error_kind is not None:
+        with pytest.raises(ProviderError) as excinfo:
             await stream_recorded_fixture(recorded_dir, vendor, name, judge=judge)
+        assert excinfo.value.kind == error_kind
         return
 
     events = await stream_recorded_fixture(recorded_dir, vendor, name, judge=judge)

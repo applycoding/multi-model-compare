@@ -4,7 +4,7 @@ import json
 from collections.abc import AsyncIterator
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Any
+from typing import Any, cast
 
 import httpx
 import httpx2
@@ -63,7 +63,7 @@ def normalize_stream_events(events: list[StreamEvent]) -> list[dict[str, Any]]:
 
 def load_xai_fixture(fixtures_dir: Path, name: str) -> dict[str, Any]:
     path = fixtures_dir / "recorded" / "xai" / f"{name}.json"
-    return json.loads(path.read_text(encoding="utf-8"))
+    return cast(dict[str, Any], json.loads(path.read_text(encoding="utf-8")))
 
 
 def _ns(data: dict[str, Any]) -> Any:
@@ -76,6 +76,10 @@ class ReplayChat:
 
     async def stream(self) -> AsyncIterator[tuple[Any, Any]]:
         async def _iter() -> AsyncIterator[tuple[Any, Any]]:
+            if self._payload.get("grpc_status"):
+                from mmc.providers.base import ProviderError
+
+                raise ProviderError("server", "synthetic xai grpc error")
             for item in self._payload.get("chunks", []):
                 yield _ns(item["response"]), _ns(item["chunk"])
 

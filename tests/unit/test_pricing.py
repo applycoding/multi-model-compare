@@ -134,7 +134,6 @@ def test_overlapping_pricing_ranges_rejected(tmp_path: Path) -> None:
         load_app_config(tmp_path)
 
 
-
 def test_haiku_from_basis() -> None:
     config = load_app_config(None)
     cost = compute_cost("anthropic:claude-haiku-5-5", _usage(1000, 1000), False, config.pricing, date(2026, 10, 23))

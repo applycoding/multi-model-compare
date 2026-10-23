@@ -1,13 +1,22 @@
-body { font-family: system-ui, sans-serif; margin: 1rem 2rem; max-width: 1100px; }
+body { font-family: system-ui, sans-serif; margin: 1rem 2rem; max-width: 1100px; color: #1a1a1a; }
 #compare-form { display: flex; flex-direction: column; gap: 0.75rem; }
 .field-prompt { font-weight: 600; margin-bottom: 0.25rem; }
-.prompt-input { width: 100%; box-sizing: border-box; font: inherit; padding: 0.5rem; min-height: 8rem; }
-.field-group { border: 1px solid #ddd; border-radius: 4px; padding: 0.75rem; }
+.prompt-input { width: 100%; box-sizing: border-box; font: inherit; padding: 0.5rem; min-height: 8rem; border: 1px solid #bbb; border-radius: 6px; }
+.field-group { border: 1px solid #ddd; border-radius: 6px; padding: 0.75rem; }
+.model-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0.35rem 0.75rem; }
+.model-option { display: flex; align-items: center; gap: 0.35rem; font-size: 0.92rem; }
+.model-name { flex: 1; }
+.badge.needs-key { font-size: 0.68rem; background: #fff3cd; color: #664d03; white-space: nowrap; }
 .params-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.5rem 1rem; }
 .params-grid label { display: flex; flex-direction: column; font-size: 0.9rem; }
+.params-grid input, #compare-form select { padding: 0.35rem 0.45rem; border: 1px solid #bbb; border-radius: 4px; font: inherit; }
 .params-grid .checkbox-row { flex-direction: row; align-items: center; gap: 0.35rem; }
+.primary-btn { align-self: flex-start; padding: 0.5rem 1.1rem; font: inherit; font-weight: 600; border: none; border-radius: 6px; background: #1a5fb4; color: #fff; cursor: pointer; }
+.primary-btn:hover { background: #1c71d8; }
 .judge-exclusions { font-size: 0.9rem; }
 header { display: flex; justify-content: space-between; align-items: baseline; }
+header h1 a { color: inherit; text-decoration: none; }
+header nav a { color: #1a5fb4; text-decoration: none; margin-left: 0.75rem; }
 table.results { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 table.results th, table.results td { border: 1px solid #ccc; padding: 0.35rem 0.5rem; text-align: left; }
 pre.answer { white-space: pre-wrap; background: #f6f6f6; padding: 0.5rem; }

@@ -53,6 +53,7 @@ P14 = "=SUM(1,2)"
 P15 = "P15: includes mock-unpriced for unknown cost."
 P16 = P1
 
+
 def _inp_tokens(prompt: str) -> int:
     return math.ceil(len(prompt) / 4)
 

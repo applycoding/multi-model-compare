@@ -1,21 +1,17 @@
-# 04 Concurrent runner
+# Concurrent runner
 
-## Goal
-run_contestants fans out mock or live providers with timeouts and ordering guarantees.
+## Modules
+- `src/mmc/core/runner.py` — `asyncio.TaskGroup`, `timeout_at`, TTFT tracking
+- `src/mmc/clock.py` — injectable clock for tests
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 04.
+## TTFT rule
+`ttft_ms` is set on the first **non-empty** `TextDelta`; usage-only or empty streams keep `ttft_ms=None`.
 
-## Steps
-1. Read the modules listed for chapter 04 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-04`.
+## Barrier test
+Mock `gate` behaviour proves `max_in_flight == n` without wall-clock sleeps.
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 04.
+```bash
+uv run pytest tests/unit/test_runner.py tests/unit/test_runner_lifecycle.py -q
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-04`

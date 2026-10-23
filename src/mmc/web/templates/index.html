@@ -5,18 +5,20 @@
   <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
   <label class="field-prompt" for="prompt-input">Prompt</label>
   <textarea id="prompt-input" class="prompt-input" name="prompt" rows="8" required placeholder="Enter a prompt to compare across models…"></textarea>
-  <fieldset class="field-group">
+  <fieldset class="field-group model-grid">
     <legend>Models</legend>
+    <div class="model-grid-inner">
     {% for item in models %}
-    <label>
+    <label class="model-option">
       <input type="checkbox" name="models" value="{{ item.spec.key }}"
         {% if item.spec.key in default_contestants %}checked{% endif %}
         {% if not item.available %}disabled{% endif %}
         data-vendor="{{ item.spec.vendor }}">
-      {{ item.spec.display_name }}
-      {% if not item.available %}<span class="badge">skipped: {{ item.skip_reason }}</span>{% endif %}
+      <span class="model-name">{{ item.spec.display_name }}</span>
+      {% if not item.available %}<span class="badge needs-key">{{ item.skip_reason }}</span>{% endif %}
     </label>
     {% endfor %}
+    </div>
   </fieldset>
   <label>Judge
     <select name="judge" id="judge-select">
@@ -40,6 +42,6 @@
     <label>Seed <input name="seed" type="number"></label>
     <label class="checkbox-row"><input type="checkbox" name="allow_self_judging" value="true"> Allow self-judging</label>
   </div>
-  <button type="submit" id="submit-btn">Run comparison</button>
+  <button type="submit" id="submit-btn" class="primary-btn">Run comparison</button>
 </form>
 {% endblock %}

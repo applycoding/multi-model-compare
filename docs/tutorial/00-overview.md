@@ -1,21 +1,28 @@
-# 00 Overview
+# Overview
 
 ## Goal
-mmc compares multiple LLMs with a mock-first default, SQLite snapshots, and a loopback web UI.
+Build **multi-model-compare (mmc)**: one prompt, up to eight models, structured judge, SQLite history, mock-first CLI and web UI.
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 00.
+## Architecture
+- `src/mmc/core/` — request validation, concurrent `runner`, tokens, pricing, supervisor
+- `src/mmc/providers/` — vendor adapters + `mock.py` + `registry.py`
+- `src/mmc/judge/` — anonymised JSON payload, native structured output, retries
+- `src/mmc/storage/` — immutable `RunRecord` snapshots in SQLite
+- `src/mmc/web/` — FastAPI loopback UI with CSRF and CSP
 
-## Steps
-1. Read the modules listed for chapter 00 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-00`.
+## Key excerpt
+The service orchestrates contestants then the judge:
+
+```python
+# mmc/service.py (simplified)
+answers = await run_contestants(...)
+judge = await run_judge(...)
+record = build_run_record(...)
+repo.save(record)
+```
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 00.
+```bash
+uv run pytest tests/unit/test_settings.py -q
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-00`

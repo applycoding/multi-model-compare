@@ -138,7 +138,9 @@ def test_smoke_flow(page_with_guard: Page, mmc_server: str, aborted_nonlocal: li
         assert re.match(r"^\$\d+\.\d{6}", text.strip().split()[0])
     page.goto(f"{mmc_server}/history")
     expect(page.locator("ul li")).to_have_count(1, timeout=5000)
-    run_id = page.locator("ul li a").first.get_attribute("href").split("/")[-1]
+    href = page.locator("ul li a").first.get_attribute("href")
+    assert href is not None
+    run_id = href.split("/")[-1]
     export_resp = page.request.get(f"{mmc_server}/export/runs.json")
     assert export_resp.ok
     payload = export_resp.json()

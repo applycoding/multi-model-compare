@@ -93,7 +93,7 @@ class Limits(BaseModel):
 
     @model_validator(mode="after")
     def finite_bounds(self) -> Limits:
-        for name in self.model_fields:
+        for name in type(self).model_fields:
             val = getattr(self, name)
             if isinstance(val, float) and not val == val:  # noqa: PLR0124
                 raise ValueError(f"{name} must be finite")

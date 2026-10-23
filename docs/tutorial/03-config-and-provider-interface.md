@@ -1,21 +1,16 @@
-# 03 Config and providers
+# Config & providers
 
-## Goal
-YAML models, pricing, rubric, and the Provider streaming interface.
+## Modules
+- `src/mmc/config/loader.py` — duplicate-key-safe YAML via custom SafeLoader
+- `src/mmc/providers/base.py` — `ProviderRequest`, `StreamEvent`, `ProviderError`
+- `src/mmc/providers/mock.py` — deterministic behaviours for CI
+- `src/mmc/providers/registry.py` — per-loop clients, availability, call counting
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 03.
-
-## Steps
-1. Read the modules listed for chapter 03 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-03`.
+## Concept
+Every vendor implements `async def stream(req) -> AsyncIterator[StreamEvent]` yielding `TextDelta` and a terminal `StreamEnd`.
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 03.
+```bash
+uv run pytest tests/unit/test_config.py tests/unit/test_mock_provider.py -q
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-03`

@@ -1,21 +1,15 @@
-# 13 Testing
+# Scenario & e2e
 
-## Goal
-Socket guards, synthetic fixtures, long scenario, and Playwright smoke.
+## Tests
+- `tests/scenario/test_long_session.py` — 18-step seeded session vs hand-calculated `EXPECTED_STEPS`
+- `tests/e2e/test_smoke.py` — real `mmc serve` + Playwright in mock mode
+- `tests/fixtures/recorded/` — synthetic vendor fixtures (not live API)
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 13.
-
-## Steps
-1. Read the modules listed for chapter 13 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-13`.
+## Golden file
+`golden_final_state.json` is checked in CI; regenerate only with `MMC_UPDATE_GOLDEN=1` locally.
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 13.
+```bash
+uv run pytest tests/scenario tests/e2e -q
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-13`

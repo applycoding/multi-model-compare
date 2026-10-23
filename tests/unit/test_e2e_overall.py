@@ -18,8 +18,6 @@ async def test_seed_42_overall_scores_match_e2e(
     resolved = resolve_request(req, config, settings, redactor, registry)
     record = await service.run(resolved)
     assert record.judge is not None
-    label_to_overall = {
-        lbl: record.judge.scores[key].overall for lbl, key in record.judge.label_map.items()
-    }
+    label_to_overall = {lbl: record.judge.scores[key].overall for lbl, key in record.judge.label_map.items()}
     for lbl, expected in EXPECTED_OVERALL.items():
         assert label_to_overall[lbl] == expected

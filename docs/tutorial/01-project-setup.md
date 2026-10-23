@@ -1,21 +1,21 @@
-# 01 Project setup
+# Project setup
 
-## Goal
-Install Python 3.13, uv, and run `uv sync`. The package lives in `src/mmc`.
+## You'll build
+Python 3.13 project managed by **uv**, strict **ruff** + **mypy**, CI workflow with SHA-pinned GitHub Actions.
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 01.
+## Files
+- `pyproject.toml` — dependencies, `[project.scripts] mmc`, pytest asyncio mode
+- `.github/workflows/ci.yml` — lint, types, unit, contract, e2e jobs
 
-## Steps
-1. Read the modules listed for chapter 01 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-01`.
+## Run locally
+```bash
+uv sync
+uv run ruff check .
+uv run mypy src
+```
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 01.
+```bash
+uv run ruff check . && uv run mypy src
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-01`

@@ -13,6 +13,7 @@ from mmc.config.schemas import AppConfig
 from mmc.core.request import RequestValidationError, RunRequest, resolve_request
 from mmc.core.tokens import TokenEstimator
 from mmc.disclosure import cli_run_disclosure
+from mmc.display import format_local_datetime, format_ms_rounded
 from mmc.export import to_csv, to_json
 from mmc.logging_setup import configure_logging
 from mmc.providers.registry import ProviderRegistry
@@ -141,8 +142,8 @@ def _cmd_run(
         print(json.dumps(record.model_dump(mode="json"), indent=2))
     else:
         for ans in record.answers:
-            ttft = ans.timing.ttft_ms if ans.timing else None
-            total_ms = ans.timing.total_ms if ans.timing else None
+            ttft = format_ms_rounded(ans.timing.ttft_ms if ans.timing else None) or None
+            total_ms = format_ms_rounded(ans.timing.total_ms if ans.timing else None) or None
             cost_usd = ans.cost.total_usd if ans.cost and ans.cost.total_usd is not None else None
             print(
                 f"{ans.model.key}\t{ans.status}\t"
@@ -172,7 +173,7 @@ def _cmd_history(ns: argparse.Namespace, repo: RunRepository) -> int:
         print(json.dumps([r.model_dump(mode="json") for r in rows], indent=2))
     else:
         for r in rows:
-            print(f"{r.id}\t{r.created_at}\t{r.prompt_preview}")
+            print(f"{r.id}\t{format_local_datetime(r.created_at)}\t{r.prompt_preview}")
     return 0
 
 

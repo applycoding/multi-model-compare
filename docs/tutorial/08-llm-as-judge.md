@@ -1,21 +1,15 @@
-# 08 LLM-as-judge
+# LLM-as-judge
 
-## Goal
-Label shuffling, rubric JSON schema, retries, and verdict parsing.
+## Modules
+- `src/mmc/judge/judge.py` — build payload, call judge model, retries, persist attempts
+- `src/mmc/judge/parser.py` — strict pydantic validation of verdict JSON
+- `src/mmc/judge/anonymise.py` — labels A–H, shuffle seed, redact vendor terms
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 08.
-
-## Steps
-1. Read the modules listed for chapter 08 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-08`.
+## Self-judging
+Default: exclude judge vendor from scored answers unless `allow_self_judging`.
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 08.
+```bash
+uv run pytest tests/unit/test_judge_parser.py tests/unit/test_judge.py tests/unit/test_anonymise.py -q
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-08`

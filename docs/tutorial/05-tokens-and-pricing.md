@@ -1,21 +1,14 @@
-# 05 Tokens and pricing
+# Tokens & pricing
 
-## Goal
-Token estimation, compute_cost, effective dates, and honest cost flags.
+## Modules
+- `src/mmc/core/tokens.py` — char/tiktoken estimators, provider vs estimated usage
+- `src/mmc/core/pricing.py` — effective-dated lookup, 6dp component rounding, Grok long-context tier
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 05.
-
-## Steps
-1. Read the modules listed for chapter 05 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-05`.
+## Hand-calculated example
+One input token at $0.50/M → `$0.000001` after `ROUND_HALF_UP` at six decimals.
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 05.
+```bash
+uv run pytest tests/unit/test_tokens.py tests/unit/test_pricing.py -q
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-05`

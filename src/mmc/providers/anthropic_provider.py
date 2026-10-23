@@ -6,6 +6,7 @@ from typing import Any
 import httpx2
 from anthropic import (
     APIConnectionError,
+    APIStatusError,
     APITimeoutError,
     AsyncAnthropic,
     AuthenticationError,
@@ -79,6 +80,8 @@ class AnthropicProvider(Provider):
             raise ProviderError("timeout", str(exc)) from exc
         except APIConnectionError as exc:
             raise ProviderError("network", str(exc)) from exc
+        except APIStatusError as exc:
+            raise ProviderError("server", str(exc)) from exc
 
         stop = final.stop_reason
         if stop in ("end_turn", "stop_sequence"):

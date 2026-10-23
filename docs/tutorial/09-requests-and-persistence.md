@@ -1,21 +1,15 @@
-# 09 Requests and persistence
+# Requests & persistence
 
-## Goal
-resolve_request validation and immutable SQLite snapshots.
+## Modules
+- `src/mmc/core/request.py` — single `resolve_request()` for CLI, API, and HTML forms
+- `src/mmc/storage/repository.py` — snapshot `record_json` + `run_summaries` index
+- `src/mmc/service.py` — ties runner, judge, pricing into `RunRecord`
 
-## What you will have at the end of this chapter
-Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 09.
-
-## Steps
-1. Read the modules listed for chapter 09 in `PLAN.md`.
-2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
-3. Compare your tree with git tag `stage-09`.
+## Immutability
+Re-saving the same run id must fail (snapshot is immutable).
 
 ## Checkpoint
-Follow PLAN.md section 11 for chapter 09.
+```bash
+uv run pytest tests/unit/test_request.py tests/unit/test_repository.py -q
+```
 
-## Docker note
-When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
-
-## Git tag
-`stage-09`

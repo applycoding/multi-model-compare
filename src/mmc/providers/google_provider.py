@@ -83,7 +83,7 @@ class GoogleProvider(Provider):
             raise ProviderError("network", str(exc)) from exc
 
         if not finish_reason:
-            raise ProviderError("protocol", "missing finish reason")
+            raise ProviderError("protocol", "stream ended without terminal event")
         blocked = {
             "SAFETY",
             "RECITATION",

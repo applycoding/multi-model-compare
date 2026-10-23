@@ -12,6 +12,7 @@ from mmc import __version__
 from mmc.config.loader import load_app_config
 from mmc.core.supervisor import RunSupervisor
 from mmc.core.tokens import TokenEstimator
+from mmc.display import answers_cost_subtotal, format_local_datetime, format_ms_rounded, judge_cost_subtotal
 from mmc.logging_setup import configure_logging
 from mmc.providers.registry import ProviderRegistry
 from mmc.redact import Redactor
@@ -58,12 +59,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     templates_dir = Path(__file__).parent / "templates"
     templates = Jinja2Templates(directory=str(templates_dir))
 
-    def _format_seconds_ms(ms: float | None) -> str:
-        if ms is None:
-            return ""
-        return f"{ms / 1000:.2f} s"
-
-    templates.env.filters["format_seconds_ms"] = _format_seconds_ms
+    templates.env.filters["format_ms"] = format_ms_rounded
+    templates.env.filters["format_local_datetime"] = format_local_datetime
+    templates.env.globals["answers_cost_subtotal"] = answers_cost_subtotal
+    templates.env.globals["judge_cost_subtotal"] = judge_cost_subtotal
     app.state.templates = templates
     static_dir = Path(__file__).parent / "static"
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")

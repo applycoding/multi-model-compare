@@ -27,8 +27,8 @@
           <span class="badge">self-judged</span>
         {% endif %}
       </td>
-      <td>{{ ans.timing.ttft_ms | format_seconds_ms if ans.timing else '' }}</td>
-      <td>{{ ans.timing.total_ms | format_seconds_ms if ans.timing else '' }}</td>
+      <td>{{ ans.timing.ttft_ms | format_ms if ans.timing else '' }}</td>
+      <td>{{ ans.timing.total_ms | format_ms if ans.timing else '' }}</td>
       <td>{{ ans.usage.input_tokens if ans.usage else '' }}</td>
       <td>{{ ans.usage.output_tokens if ans.usage else '' }}</td>
       <td>
@@ -51,4 +51,8 @@
   {% endfor %}
   </tbody>
 </table>
+<p>Answers cost: ${{ answers_cost_subtotal(record) }}{% if record.total.estimated %} est.{% endif %}</p>
+{% if record.judge %}
+<p>Judge cost: ${{ judge_cost_subtotal(record) }}</p>
+{% endif %}
 <p>Total: ${{ record.total.subtotal_usd }}{% if record.total.estimated %} est.{% endif %}{% if record.total.unknown_count %} + {{ record.total.unknown_count }} unknown{% endif %}</p>

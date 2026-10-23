@@ -6,6 +6,7 @@ from typing import Any
 import httpx2
 from openai import (
     APIConnectionError,
+    APIError,
     APITimeoutError,
     AsyncOpenAI,
     AuthenticationError,
@@ -70,6 +71,7 @@ class OpenAIProvider(Provider):
         outcome = "ok"
         finish_reason: str | None = None
         usage: ProviderUsage | None = None
+        terminal_seen = False
         try:
             async with self._client.responses.stream(**kwargs) as stream:
                 async for event in stream:
@@ -82,6 +84,7 @@ class OpenAIProvider(Provider):
                         if event.delta:
                             refusal_parts.append(event.delta)
                     elif etype == "response.completed":
+                        terminal_seen = True
                         finish_reason = "completed"
                         resp = event.response
                         request_id = getattr(resp, "id", None)
@@ -102,6 +105,7 @@ class OpenAIProvider(Provider):
                         if refusal_parts and not output:
                             outcome = "refused"
                     elif etype == "response.incomplete":
+                        terminal_seen = True
                         reason = event.response.incomplete_details.reason if event.response.incomplete_details else ""
                         if reason == "max_output_tokens":
                             outcome = "incomplete"
@@ -124,6 +128,11 @@ class OpenAIProvider(Provider):
             raise ProviderError("timeout", str(exc)) from exc
         except APIConnectionError as exc:
             raise ProviderError("network", str(exc)) from exc
+        except APIError as exc:
+            raise ProviderError("server", str(exc)) from exc
+
+        if not terminal_seen:
+            raise ProviderError("protocol", "stream ended without terminal event")
 
         yield StreamEnd(
             outcome=outcome,
