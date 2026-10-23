@@ -31,6 +31,7 @@ class TextDelta(BaseModel):
     kind: Literal["delta"] = "delta"
     text: str
 
+
 class StreamEnd(BaseModel):
     kind: Literal["end"] = "end"
     outcome: Outcome

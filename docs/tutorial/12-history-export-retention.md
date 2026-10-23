@@ -21,6 +21,7 @@ class RunExport(BaseModel):
     exported_at: datetime
     runs: list[RunRecord]
 
+
 def to_json(records: Iterable[RunRecord], now: datetime) -> str:
     payload = RunExport(exported_at=now, runs=list(records))
     return payload.model_dump_json()
