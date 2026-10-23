@@ -226,7 +226,7 @@ def test_init_db_twice_is_idempotent(legacy_v1_db: Path) -> None:
 def test_legacy_mock_honesty_on_list_get_api_ui_and_exports(legacy_v1_db: Path, monkeypatch) -> None:
     monkeypatch.setenv("MMC_DB_PATH", str(legacy_v1_db))
     engine = init_db(legacy_v1_db)
-    assert SCHEMA_VERSION == 2
+    assert SCHEMA_VERSION == 3
 
     repo = RunRepository(engine)
     mock_summary = next(s for s in repo.list() if s.id == "legacy-mock-1")
