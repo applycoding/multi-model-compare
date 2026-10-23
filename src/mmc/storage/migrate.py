@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import text
 from sqlalchemy.engine import Connection, Engine
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 
 def _table_has_column(conn: Connection, table: str, column: str) -> bool:
@@ -47,9 +47,14 @@ def _migrate_v1_to_v2(conn: Connection) -> None:
         conn.execute(text("ALTER TABLE run_summaries ADD COLUMN pricing_disclosure TEXT NOT NULL DEFAULT 'live'"))
     if not _table_has_column(conn, "run_summaries", "scores_mock"):
         conn.execute(text("ALTER TABLE run_summaries ADD COLUMN scores_mock TEXT NOT NULL DEFAULT 'false'"))
-    _sync_honesty_summaries(conn)
     conn.execute(text("DELETE FROM schema_meta"))
     conn.execute(text("INSERT INTO schema_meta (version) VALUES (2)"))
+
+
+def _migrate_v2_to_v3(conn: Connection) -> None:
+    _sync_honesty_summaries(conn)
+    conn.execute(text("DELETE FROM schema_meta"))
+    conn.execute(text("INSERT INTO schema_meta (version) VALUES (3)"))
 
 
 def migrate_schema(engine: Engine) -> None:
@@ -58,10 +63,13 @@ def migrate_schema(engine: Engine) -> None:
         if stored is None:
             conn.execute(text("INSERT INTO schema_meta (version) VALUES (:v)"), {"v": SCHEMA_VERSION})
             return
-        if stored == 1 and SCHEMA_VERSION == 2:
-            _migrate_v1_to_v2(conn)
-            return
         if stored == SCHEMA_VERSION:
-            _sync_honesty_summaries(conn)
+            return
+        if stored == 1:
+            _migrate_v1_to_v2(conn)
+            _migrate_v2_to_v3(conn)
+            return
+        if stored == 2 and SCHEMA_VERSION == 3:
+            _migrate_v2_to_v3(conn)
             return
         raise RuntimeError(f"unsupported database schema version {stored}; expected {SCHEMA_VERSION}")
