@@ -92,6 +92,7 @@ EXPECTED_STEPS: dict[int, dict[str, Any]] = {
         "judge_attempts": 1,
         "excluded": ["mock:mock-gemini"],
         "answer_ok": 4,
+        "run_subtotal": "0",
         "pricing_disclosure_mock": True,
         "scores_mock": True,
     },
@@ -99,6 +100,7 @@ EXPECTED_STEPS: dict[int, dict[str, Any]] = {
         "judged": 4,
         "judge_status": "ok",
         "self_judged_gemini": True,
+        "run_subtotal": "0",
     },
     3: {
         "gpt_status": "timeout",
@@ -145,6 +147,7 @@ EXPECTED_STEPS: dict[int, dict[str, Any]] = {
     13: {
         "pricing_version": "2026-11-01",
         "prior_snapshots_unchanged": True,
+        "run_subtotal": "0",
     },
     14: {
         "run_0001_unchanged": True,

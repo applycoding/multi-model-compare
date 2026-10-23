@@ -5,11 +5,12 @@ from pathlib import Path
 
 from sqlalchemy import event, text
 from sqlalchemy.engine import Engine
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import SQLModel, create_engine
 
-from mmc.storage.tables import SchemaMeta
+from mmc.storage import tables as _tables  # noqa: F401 - register SQLModel metadata
+from mmc.storage.migrate import SCHEMA_VERSION, migrate_schema
 
-SCHEMA_VERSION = 1
+__all__ = ["SCHEMA_VERSION", "init_db", "make_engine"]
 
 
 def make_engine(db_path: Path) -> Engine:
@@ -35,14 +36,5 @@ def init_db(db_path: Path) -> Engine:
         conn.execute(text("PRAGMA foreign_keys=ON"))
         conn.commit()
     SQLModel.metadata.create_all(engine)
-    with Session(engine) as session:
-        existing = session.get(SchemaMeta, SCHEMA_VERSION)
-        if existing is None:
-            meta = session.get(SchemaMeta, 1)
-            if meta is None:
-                session.add(SchemaMeta(version=SCHEMA_VERSION))
-                session.commit()
-            else:
-                if meta.version != SCHEMA_VERSION:
-                    raise RuntimeError(f"schema mismatch: expected {SCHEMA_VERSION}")
+    migrate_schema(engine)
     return engine

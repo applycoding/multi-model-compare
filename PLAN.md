@@ -1064,7 +1064,7 @@ The golden file is regenerated only locally, with `MMC_UPDATE_GOLDEN=1`. CI neve
    - exactly 4 judged rows
    - labels A-D
    - overall scores equal the constants in `EXPECTED_OVERALL` (also asserted against the in-process service in a unit test)
-   - cost cells match `^\$\d+\.\d{6}$`
+   - cost cells show `$0` with the `example pricing (mock)` badge (mock profile honesty)
 5. It opens `/history` and checks the run is listed. "Export JSON" downloads a file that parses with `schema_version == 1`. "Delete" removes the run.
 6. The aborted non-local request count is 0. On failure, traces in `test-results/` are uploaded.
 

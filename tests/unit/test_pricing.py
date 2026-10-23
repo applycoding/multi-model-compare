@@ -190,6 +190,19 @@ def test_pricing_v2_doubles_mock_contestant_cost_vs_v1() -> None:
     assert c2.total_usd == c1.total_usd * 2
 
 
+def _hand_answer_cost(prompt: str, input_per_mtok: Decimal, output_per_mtok: Decimal) -> Decimal:
+    inp = _inp_tokens(prompt)
+    in_cost = (Decimal(inp) * input_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    out_cost = (Decimal(60) * output_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    return in_cost + out_cost
+
+
+def _hand_judge_attempt_cost(input_per_mtok: Decimal, output_per_mtok: Decimal) -> Decimal:
+    in_cost = (Decimal(1000) * input_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    out_cost = (Decimal(200) * output_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    return in_cost + out_cost
+
+
 def test_scenario_p1_run_subtotal_four_answers_plus_judge() -> None:
     table = _load_pricing_table("pricing_v1.yaml")
     usage = _scenario_answer_usage()
@@ -206,5 +219,9 @@ def test_scenario_p1_run_subtotal_four_answers_plus_judge() -> None:
     judge_cost = compute_cost("mock:mock-judge", judge_usage, False, table, date(2026, 10, 23))
     costs: list[Cost | None] = [answer_cost] * 4 + [judge_cost]
     total = sum_costs(costs)
-    assert total.subtotal_usd == (answer_cost.total_usd or Decimal(0)) * 4 + (judge_cost.total_usd or Decimal(0))
-    assert total.subtotal_usd > Decimal(0)
+    expected_answer = _hand_answer_cost(SCENARIO_P1, Decimal("1.00"), Decimal("2.00"))
+    expected_judge = _hand_judge_attempt_cost(Decimal("1.00"), Decimal("2.00"))
+    expected_subtotal = expected_answer * 4 + expected_judge
+    assert total.subtotal_usd == expected_subtotal
+    assert answer_cost.total_usd == expected_answer
+    assert judge_cost.total_usd == expected_judge
