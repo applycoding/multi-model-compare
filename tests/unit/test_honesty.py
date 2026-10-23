@@ -43,6 +43,25 @@ async def test_mock_profile_zeros_costs_and_sets_disclosure(
     assert record.judge.scores_mock is True
 
 
+def test_api_list_runs_includes_honesty_summary_fields(tmp_db, monkeypatch) -> None:
+    monkeypatch.setenv("MMC_DB_PATH", str(tmp_db))
+    app = create_app(Settings.from_env())
+    with TestClient(app, base_url="http://127.0.0.1") as client:
+        token = client.get("/api/csrf").json()["csrf_token"]
+        create = client.post(
+            "/api/runs",
+            json={"prompt": "list honesty", "seed": 4},
+            headers={"X-CSRF-Token": token},
+        )
+        assert create.status_code == 201
+        rows = client.get("/api/runs").json()
+        assert len(rows) >= 1
+        row = rows[0]
+        assert row["pricing_disclosure"] == "example_pricing_mock"
+        assert row["scores_mock"] is True
+        assert row["total_known_cost_usd"] == "0"
+
+
 def test_api_mock_run_includes_honesty_fields(tmp_db, monkeypatch) -> None:
     monkeypatch.setenv("MMC_DB_PATH", str(tmp_db))
     app = create_app(Settings.from_env())

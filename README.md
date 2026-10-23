@@ -95,7 +95,7 @@ Copy `src/mmc/defaults/` or set `MMC_CONFIG_DIR` to override `models.yaml`, `rub
 | `MMC_ALLOWED_HOSTS` | Extra Host allowlist entries (comma-separated) |
 | `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `XAI_API_KEY` | Live providers only |
 
-**Pricing (live profile):** `pricing.yaml` entries are illustrative placeholders with `source_url` and `retrieved_on`; **TODO: verify** against vendor pages before trusting cost output. Grok long-context above 200k tokens uses a separate tier (marked **estimated** when unverified). Haiku uses `basis: from` (lower-bound). xAI reasoning-token billing is **estimated** unless `reasoning_tokens_additive` is verified.
+**Pricing (live profile):** `pricing.yaml` entries are illustrative placeholders with `source_url` and `retrieved_on`; **TODO: verify** against vendor pages before trusting cost output. Grok long-context above 200k tokens uses a separate tier (marked **estimated** when unverified). Haiku uses `basis: from`, which marks the line item **estimated** in the UI (from-price tier note), not an exact list price. xAI reasoning-token billing is **estimated** unless `reasoning_tokens_additive` is verified.
 
 ## Judging
 

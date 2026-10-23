@@ -83,4 +83,5 @@ def test_answers_table_shows_mock_pricing_label(templates) -> None:
     )
     html = templates.env.get_template("_answers_table.html").render(record=record)
     assert "example pricing (mock)" in html
-    assert "Answers cost: $0" in html
+    assert "Answers cost: $0 <span" in html
+    assert "$0.000000" not in html

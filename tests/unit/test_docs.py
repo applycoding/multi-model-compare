@@ -7,7 +7,7 @@ _UNICODE_DASHES = re.compile(r"[\u2013\u2014]")
 
 
 def test_readme_and_docs_use_plain_dashes_not_en_em() -> None:
-    paths = [Path("README.md"), *Path("docs").rglob("*.md")]
+    paths = [Path("README.md"), Path("PLAN.md"), *Path("docs").rglob("*.md")]
     for path in paths:
         text = path.read_text(encoding="utf-8")
         assert _UNICODE_DASHES.search(text) is None, f"unicode dash in {path}"

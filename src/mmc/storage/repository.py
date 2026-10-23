@@ -28,6 +28,7 @@ class RunRepository:
         if record.total.unknown_count:
             flags.append("unknown")
         cost_flags = ",".join(flags)
+        scores_mock = "true" if record.judge and record.judge.scores_mock else "false"
         with Session(self._engine) as session:
             session.add(
                 RunRow(
@@ -44,6 +45,8 @@ class RunRepository:
                     status=record.status,
                     total_known_cost_usd=str(record.total.subtotal_usd),
                     cost_flags=cost_flags,
+                    pricing_disclosure=record.pricing_disclosure,
+                    scores_mock=scores_mock,
                 )
             )
             session.commit()
@@ -76,6 +79,8 @@ class RunRepository:
                     status=r.status,
                     total_known_cost_usd=Decimal(r.total_known_cost_usd),
                     cost_flags=[f for f in r.cost_flags.split(",") if f],
+                    pricing_disclosure=r.pricing_disclosure,
+                    scores_mock=r.scores_mock == "true",
                 )
                 for r in rows
             ]

@@ -42,3 +42,5 @@ class RunSummary(BaseModel):
     status: RunStatus
     total_known_cost_usd: Decimal
     cost_flags: list[str]
+    pricing_disclosure: Literal["live", "example_pricing_mock"] = "live"
+    scores_mock: bool = False

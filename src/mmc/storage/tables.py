@@ -23,3 +23,5 @@ class RunSummaryRow(SQLModel, table=True):
     status: str
     total_known_cost_usd: str
     cost_flags: str
+    pricing_disclosure: str = "live"
+    scores_mock: str = "false"
