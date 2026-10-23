@@ -1,5 +1,5 @@
-# ILLUSTRATIVE: Rates are demo placeholders for this portfolio repo.
-# TODO: verify each entry against its source_url and retrieved_on before MMC_PROFILE=live.
+# ILLUSTRATIVE: Portfolio placeholder model keys and example rates for demos.
+# Before MMC_PROFILE=live, compare each entry to its source_url (see retrieved_on) on the vendor site.
 version: "2026-10-23"
 currency: USD
 entries:

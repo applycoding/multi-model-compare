@@ -16,7 +16,12 @@ def test_readme_and_docs_use_plain_dashes_not_en_em() -> None:
 def test_pricing_yaml_marked_illustrative() -> None:
     text = Path("src/mmc/defaults/pricing.yaml").read_text(encoding="utf-8")
     assert "ILLUSTRATIVE" in text
-    assert "TODO: verify" in text
+
+
+def test_readme_and_default_pricing_yaml_have_no_todo_markers() -> None:
+    for path in (Path("README.md"), Path("src/mmc/defaults/pricing.yaml")):
+        text = path.read_text(encoding="utf-8")
+        assert "TODO" not in text, f"TODO marker in {path}"
 
 
 def test_models_yaml_points_at_model_ids_doc() -> None:
