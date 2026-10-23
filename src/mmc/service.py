@@ -14,6 +14,7 @@ from mmc.core.request import ResolvedRun
 from mmc.core.results import AnswerResult
 from mmc.core.runner import run_contestants
 from mmc.core.tokens import TokenEstimator
+from mmc.honesty import apply_profile_honesty
 from mmc.judge.judge import run_judge
 from mmc.judge.schemas import JudgeOutcome
 from mmc.providers.registry import ProviderRegistry
@@ -160,7 +161,7 @@ class CompareService:
         if judge:
             costs.extend(att.cost for att in judge.attempts)
         total = sum_costs(costs)
-        return RunRecord(
+        record = RunRecord(
             id=run_id,
             created_at=created,
             profile=self._settings.profile,
@@ -177,3 +178,4 @@ class CompareService:
             judge=judge,
             total=total,
         )
+        return apply_profile_honesty(record)

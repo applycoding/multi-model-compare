@@ -15,9 +15,11 @@ from mmc.core.tokens import TokenEstimator
 from mmc.display import (
     answers_cost_estimated,
     answers_cost_subtotal,
+    format_answer_cost_usd,
     format_local_datetime,
     format_ms_rounded,
     judge_cost_subtotal,
+    mock_pricing_label,
 )
 from mmc.logging_setup import configure_logging
 from mmc.providers.registry import ProviderRegistry
@@ -70,6 +72,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     templates.env.globals["answers_cost_subtotal"] = answers_cost_subtotal
     templates.env.globals["answers_cost_estimated"] = answers_cost_estimated
     templates.env.globals["judge_cost_subtotal"] = judge_cost_subtotal
+    templates.env.globals["format_answer_cost_usd"] = format_answer_cost_usd
+    templates.env.globals["mock_pricing_label"] = mock_pricing_label
     app.state.templates = templates
     static_dir = Path(__file__).parent / "static"
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")

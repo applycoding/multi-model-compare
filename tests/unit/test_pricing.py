@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -8,8 +9,34 @@ import pytest
 import yaml
 
 from mmc.config.loader import load_app_config
+from mmc.config.schemas import PricingTable
 from mmc.core.pricing import compute_cost, sum_costs
-from mmc.core.results import TokenUsage
+from mmc.core.results import Cost, TokenUsage
+
+FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "config"
+SCENARIO_P1 = "Scenario prompt for multi-step seeded session."
+
+
+def _inp_tokens(prompt: str) -> int:
+    return math.ceil(len(prompt) / 4)
+
+
+def _load_pricing_table(name: str) -> PricingTable:
+    data = yaml.safe_load((FIXTURES / name).read_text(encoding="utf-8"))
+    return PricingTable.model_validate(data)
+
+
+def _scenario_answer_usage() -> TokenUsage:
+    inp = _inp_tokens(SCENARIO_P1)
+    return TokenUsage(
+        input_tokens=inp,
+        output_tokens=60,
+        reasoning_tokens=None,
+        total_tokens=inp + 60,
+        raw={"input_tokens": inp, "output_tokens": 60},
+        input_source="provider",
+        output_source="provider",
+    )
 
 
 def _usage(inp: int, out: int) -> TokenUsage:
@@ -139,3 +166,62 @@ def test_haiku_from_basis() -> None:
     cost = compute_cost("anthropic:claude-haiku-5-5", _usage(1000, 1000), False, config.pricing, date(2026, 10, 23))
     assert cost.status == "estimated"
     assert any("from-price" in n for n in cost.notes)
+
+
+def test_scenario_p1_mock_answer_cost_matches_hand_math() -> None:
+    table = _load_pricing_table("pricing_v1.yaml")
+    usage = _scenario_answer_usage()
+    cost = compute_cost("mock:mock-claude", usage, False, table, date(2026, 10, 23))
+    inp = Decimal(usage.input_tokens)
+    expected = (inp * Decimal("1.00") / Decimal(1_000_000)).quantize(Decimal("0.000001")) + (
+        Decimal(60) * Decimal("2.00") / Decimal(1_000_000)
+    ).quantize(Decimal("0.000001"))
+    assert cost.total_usd == expected
+    assert cost.status == "known"
+
+
+def test_pricing_v2_doubles_mock_contestant_cost_vs_v1() -> None:
+    usage = _scenario_answer_usage()
+    v1 = _load_pricing_table("pricing_v1.yaml")
+    v2 = _load_pricing_table("pricing_v2.yaml")
+    c1 = compute_cost("mock:mock-gpt", usage, False, v1, date(2026, 10, 23))
+    c2 = compute_cost("mock:mock-gpt", usage, False, v2, date(2026, 10, 23))
+    assert c1.total_usd is not None and c2.total_usd is not None
+    assert c2.total_usd == c1.total_usd * 2
+
+
+def _hand_answer_cost(prompt: str, input_per_mtok: Decimal, output_per_mtok: Decimal) -> Decimal:
+    inp = _inp_tokens(prompt)
+    in_cost = (Decimal(inp) * input_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    out_cost = (Decimal(60) * output_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    return in_cost + out_cost
+
+
+def _hand_judge_attempt_cost(input_per_mtok: Decimal, output_per_mtok: Decimal) -> Decimal:
+    in_cost = (Decimal(1000) * input_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    out_cost = (Decimal(200) * output_per_mtok / Decimal(1_000_000)).quantize(Decimal("0.000001"))
+    return in_cost + out_cost
+
+
+def test_scenario_p1_run_subtotal_four_answers_plus_judge() -> None:
+    table = _load_pricing_table("pricing_v1.yaml")
+    usage = _scenario_answer_usage()
+    answer_cost = compute_cost("mock:mock-claude", usage, False, table, date(2026, 10, 23))
+    judge_usage = TokenUsage(
+        input_tokens=1000,
+        output_tokens=200,
+        reasoning_tokens=None,
+        total_tokens=1200,
+        raw={"input_tokens": 1000, "output_tokens": 200},
+        input_source="provider",
+        output_source="provider",
+    )
+    judge_cost = compute_cost("mock:mock-judge", judge_usage, False, table, date(2026, 10, 23))
+    costs: list[Cost | None] = [answer_cost] * 4 + [judge_cost]
+    total = sum_costs(costs)
+    expected_answer = _hand_answer_cost(SCENARIO_P1, Decimal("1.00"), Decimal("2.00"))
+    expected_judge = _hand_judge_attempt_cost(Decimal("1.00"), Decimal("2.00"))
+    expected_subtotal = expected_answer * 4 + expected_judge
+    assert total.subtotal_usd == expected_subtotal
+    assert answer_cost.total_usd == expected_answer
+    assert judge_cost.total_usd == expected_judge

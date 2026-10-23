@@ -8,7 +8,7 @@ mmc separates **token measurement** (what the provider reported versus what we e
 
 `src/mmc/core/pricing.py` loads rows from the validated `PricingTable` in config. `compute_cost()` picks base or long-context tier when input tokens exceed configured thresholds (notably for Grok), applies per-million token rates, and rounds each USD component to six decimal places with `ROUND_HALF_UP`. Notes flag estimated tokens, xAI reasoning billing uncertainty, and "from" pricing tiers.
 
-Totals across answers and judge attempts use `sum_costs()` so the CLI and UI show one subtotal with explicit estimated/unknown flags.
+Totals across answers and judge attempts use `sum_costs()` so the CLI and UI show one subtotal with explicit estimated/unknown flags. In **mock** profile, `apply_profile_honesty()` in `src/mmc/honesty.py` stores displayed USD as zero and sets `pricing_disclosure` to `example_pricing_mock` on each `RunRecord` so API and UI never imply real billing.
 
 ## Code excerpt
 
@@ -52,4 +52,4 @@ Pricing tables, rounding, and Grok tier notes:
 uv run pytest tests/unit/test_pricing.py -q
 ```
 
-Scenario tests recompute expected costs step by step in `tests/scenario/test_long_session.py`.
+Scenario tests assert mock-profile subtotals stay at zero while `tests/unit/test_pricing.py` checks hand-computed rates against `compute_cost()` using fixture pricing tables.

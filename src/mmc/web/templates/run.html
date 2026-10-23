@@ -3,7 +3,7 @@
 <h2>Run {{ record.id }}</h2>
 <p>Profile: {{ record.profile }} | Seed: {{ record.seed }}</p>
 {% if record.judge %}
-<p>Judge: <strong>{{ record.judge.judge.display_name }}</strong> ({{ record.judge.judge.key }}), status {{ record.judge.status }}, attempts {{ record.judge.attempts|length }}</p>
+<p>Judge: <strong>{{ record.judge.judge.display_name }}</strong> ({{ record.judge.judge.key }}), status {{ record.judge.status }}, attempts {{ record.judge.attempts|length }}{% if record.judge.scores_mock %} <span class="badge badge-mock-scores">mock scores (deterministic, not a real judge)</span>{% endif %}</p>
 {% if record.judge.excluded %}
 <p class="judge-exclusions">Excluded from judging:
   {% for model_key, reason in record.judge.excluded.items() %}

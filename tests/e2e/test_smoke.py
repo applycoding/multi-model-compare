@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-import re
 import socket
 import subprocess
 import sys
@@ -132,10 +131,13 @@ def test_smoke_flow(page_with_guard: Page, mmc_server: str, aborted_nonlocal: li
     assert sorted(labels_seen) == ["A", "B", "C", "D"]
     for lbl, expected in EXPECTED_OVERALL.items():
         assert scores[lbl] == expected
+    expect(page.locator(".pricing-disclosure")).to_contain_text("example pricing (mock)")
+    expect(page.locator(".badge-mock-scores")).to_contain_text("mock scores")
     cost_cells = page.locator("table.results tbody tr td:nth-child(8)")
     for i in range(4):
         text = cost_cells.nth(i).inner_text()
-        assert re.match(r"^\$\d+\.\d{6}", text.strip().split()[0])
+        assert text.strip().startswith("$0")
+        assert "example pricing (mock)" in text
     page.goto(f"{mmc_server}/history")
     expect(page.locator("ul li")).to_have_count(1, timeout=5000)
     href = page.locator("ul li a").first.get_attribute("href")

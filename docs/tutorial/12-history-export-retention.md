@@ -4,9 +4,9 @@ Operators need to list past runs, inspect details, export datasets for analysis,
 
 ## What these modules do
 
-History list endpoints and CLI `history` read lightweight `RunSummary` rows: created time, prompt preview (first 200 characters), status, known subtotal USD, and cost flags such as `estimated` or `unknown`. Detail views load the full `RunRecord` JSON snapshot by run id.
+History list endpoints and CLI `history` read lightweight `RunSummary` rows: created time, prompt preview (first 200 characters), status, known subtotal USD, cost flags such as `estimated` or `unknown`, plus honesty fields `pricing_disclosure` (`live` or `example_pricing_mock`) and `scores_mock` (true when the judge was a deterministic mock). Detail views load the full `RunRecord` JSON snapshot by run id.
 
-`src/mmc/export.py` serialises runs to JSON with `schema_version=1` wrapped in `RunExport`, or flattens rows to CSV with stable criterion column ordering derived from rubric keys across the export batch. `_sanitize_cell()` neutralises formula injection in spreadsheet tools by prefixing dangerous leading characters.
+`src/mmc/export.py` serialises runs to JSON with `schema_version=1` wrapped in `RunExport`, or flattens rows to CSV with stable criterion column ordering derived from rubric keys across the export batch. CSV rows include `pricing_disclosure` and `scores_mock` so mock runs do not look like live billing in spreadsheets. `_sanitize_cell()` neutralises formula injection in spreadsheet tools by prefixing dangerous leading characters.
 
 Deletion via repository `delete()` removes the summary row first, then the snapshot. `clear()` counts and wipes all runs for retention resets. Exports operate on in-memory `RunRecord` objects so redaction applied at save time is what users receive.
 
