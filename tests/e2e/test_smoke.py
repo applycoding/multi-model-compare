@@ -5,8 +5,10 @@ import socket
 import subprocess
 import sys
 import time
+from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
+from typing import cast
 
 import pytest
 from playwright.sync_api import Page, Route, expect
@@ -22,11 +24,11 @@ EXPECTED_OVERALL: dict[str, Decimal] = {
 def _free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("127.0.0.1", 0))
-        return s.getsockname()[1]
+        return cast(int, s.getsockname()[1])
 
 
 @pytest.fixture(scope="session")
-def mmc_server(tmp_path_factory) -> str:
+def mmc_server(tmp_path_factory) -> Iterator[str]:
     tmp = tmp_path_factory.mktemp("e2e")
     db = tmp / "e2e.sqlite3"
     port = _free_port()
