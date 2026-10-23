@@ -223,6 +223,25 @@ def test_init_db_twice_is_idempotent(legacy_v1_db: Path) -> None:
     assert mock_row.total_known_cost_usd == Decimal(0)
 
 
+def test_init_db_on_v3_database_does_not_sync_honesty_summaries(tmp_path: Path, monkeypatch) -> None:
+    from mmc.storage import migrate as migrate_mod
+
+    db_path = tmp_path / "v3.sqlite"
+    init_db(db_path)
+
+    sync_calls = 0
+    real_sync = migrate_mod._sync_honesty_summaries
+
+    def counting_sync(conn: object) -> None:
+        nonlocal sync_calls
+        sync_calls += 1
+        real_sync(conn)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(migrate_mod, "_sync_honesty_summaries", counting_sync)
+    init_db(db_path)
+    assert sync_calls == 0
+
+
 def test_legacy_mock_honesty_on_list_get_api_ui_and_exports(legacy_v1_db: Path, monkeypatch) -> None:
     monkeypatch.setenv("MMC_DB_PATH", str(legacy_v1_db))
     engine = init_db(legacy_v1_db)
