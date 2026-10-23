@@ -25,6 +25,10 @@ def answers_cost_subtotal(record: RunRecord) -> Decimal:
     return total
 
 
+def answers_cost_estimated(record: RunRecord) -> bool:
+    return any(ans.cost and ans.cost.status == "estimated" for ans in record.answers)
+
+
 def judge_cost_subtotal(record: RunRecord) -> Decimal:
     total = Decimal(0)
     if record.judge is None:

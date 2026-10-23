@@ -84,6 +84,8 @@ class AnthropicProvider(Provider):
             raise ProviderError("server", str(exc)) from exc
 
         stop = final.stop_reason
+        if stop is None:
+            raise ProviderError("protocol", "stream ended without terminal event")
         if stop in ("end_turn", "stop_sequence"):
             outcome = "ok"
         elif stop in ("max_tokens", "pause_turn"):
@@ -91,7 +93,7 @@ class AnthropicProvider(Provider):
         elif stop == "refusal":
             outcome = "refused"
         else:
-            outcome = "ok"
+            raise ProviderError("protocol", f"unexpected stop_reason: {stop}")
         usage = ProviderUsage(
             input_tokens=final.usage.input_tokens,
             output_tokens=final.usage.output_tokens,

@@ -14,7 +14,7 @@ _CATALOG: list[tuple[str, str, str | None, str | None]] = [
     ("anthropic", "incomplete", "incomplete", None),
     ("anthropic", "truncation", "incomplete", None),
     ("anthropic", "error", None, "server"),
-    ("anthropic", "missing_terminal", None, "server"),
+    ("anthropic", "missing_terminal", None, "protocol"),
     ("anthropic", "judge", "ok", None),
     ("openai", "ok", "ok", None),
     ("openai", "refusal", "refused", None),

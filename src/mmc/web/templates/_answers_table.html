@@ -51,7 +51,7 @@
   {% endfor %}
   </tbody>
 </table>
-<p>Answers cost: ${{ answers_cost_subtotal(record) }}{% if record.total.estimated %} est.{% endif %}</p>
+<p>Answers cost: ${{ answers_cost_subtotal(record) }}{% if answers_cost_estimated(record) %} est.{% endif %}</p>
 {% if record.judge %}
 <p>Judge cost: ${{ judge_cost_subtotal(record) }}</p>
 {% endif %}

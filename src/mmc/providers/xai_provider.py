@@ -148,8 +148,6 @@ def _usage_from_response(response: Any, config: AppConfig) -> ProviderUsage | No
 def _map_grpc_error(exc: Exception) -> ProviderError:
     import grpc
 
-    if isinstance(exc, ProviderError):
-        return exc
     if isinstance(exc, grpc.aio.AioRpcError):
         code = exc.code()
         if code in (grpc.StatusCode.UNAUTHENTICATED, grpc.StatusCode.PERMISSION_DENIED):

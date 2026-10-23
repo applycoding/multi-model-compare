@@ -3,13 +3,58 @@ body { font-family: system-ui, sans-serif; margin: 1rem 2rem; max-width: 1100px;
 .field-prompt { font-weight: 600; margin-bottom: 0.25rem; }
 .prompt-input { width: 100%; box-sizing: border-box; font: inherit; padding: 0.5rem; min-height: 8rem; border: 1px solid #bbb; border-radius: 6px; }
 .field-group { border: 1px solid #ddd; border-radius: 6px; padding: 0.75rem; }
-.model-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0.35rem 0.75rem; }
-.model-option { display: flex; align-items: center; gap: 0.35rem; font-size: 0.92rem; }
-.model-name { flex: 1; }
-.badge.needs-key { font-size: 0.68rem; background: #fff3cd; color: #664d03; white-space: nowrap; }
+.model-grid-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: 0.5rem 0.75rem;
+  align-items: start;
+}
+.model-option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.35rem;
+  row-gap: 0.15rem;
+  font-size: 0.92rem;
+  align-items: start;
+}
+.model-option > input[type="checkbox"] { grid-row: 1 / span 2; margin-top: 0.15rem; }
+.model-name { grid-column: 2; line-height: 1.25; word-break: normal; overflow-wrap: break-word; }
+.model-option .badge.needs-key {
+  grid-column: 2;
+  justify-self: start;
+  font-size: 0.68rem;
+  background: #fff3cd;
+  color: #664d03;
+  white-space: normal;
+  max-width: 100%;
+}
+.badge.needs-key { font-size: 0.68rem; background: #fff3cd; color: #664d03; }
 .params-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.5rem 1rem; }
 .params-grid label { display: flex; flex-direction: column; font-size: 0.9rem; }
-.params-grid input, #compare-form select { padding: 0.35rem 0.45rem; border: 1px solid #bbb; border-radius: 4px; font: inherit; }
+.params-grid input { padding: 0.35rem 0.45rem; border: 1px solid #bbb; border-radius: 4px; font: inherit; }
+.judge-field { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 600; max-width: 22rem; }
+.judge-select {
+  padding: 0.45rem 0.55rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font: inherit;
+  background: #fff;
+  cursor: pointer;
+}
+.judge-select:focus { outline: 2px solid #1a5fb4; outline-offset: 1px; }
+.danger-btn {
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.9rem;
+  font: inherit;
+  font-weight: 600;
+  border: 1px solid #c01c28;
+  border-radius: 6px;
+  background: #fff;
+  color: #c01c28;
+  cursor: pointer;
+}
+.danger-btn:hover { background: #fce8e6; }
 .params-grid .checkbox-row { flex-direction: row; align-items: center; gap: 0.35rem; }
 .primary-btn { align-self: flex-start; padding: 0.5rem 1.1rem; font: inherit; font-weight: 600; border: none; border-radius: 6px; background: #1a5fb4; color: #fff; cursor: pointer; }
 .primary-btn:hover { background: #1c71d8; }

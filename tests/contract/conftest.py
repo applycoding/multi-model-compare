@@ -6,6 +6,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, cast
 
+import grpc
 import httpx
 import httpx2
 import pytest
@@ -76,10 +77,10 @@ class ReplayChat:
 
     async def stream(self) -> AsyncIterator[tuple[Any, Any]]:
         async def _iter() -> AsyncIterator[tuple[Any, Any]]:
-            if self._payload.get("grpc_status"):
-                from mmc.providers.base import ProviderError
-
-                raise ProviderError("server", "synthetic xai grpc error")
+            grpc_status = self._payload.get("grpc_status")
+            if grpc_status:
+                code = grpc.StatusCode[grpc_status]
+                raise grpc.aio.AioRpcError(code, self._payload.get("grpc_details", "synthetic xai grpc error"))
             for item in self._payload.get("chunks", []):
                 yield _ns(item["response"]), _ns(item["chunk"])
 

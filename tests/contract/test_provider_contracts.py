@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import httpx
@@ -194,26 +195,55 @@ async def test_google_request_has_no_tool_choice(recorded_dir: Path) -> None:
     await prov.aclose()
     await client.aclose()
     assert captured
-    raw = captured[0].content.decode("utf-8", errors="replace")
-    assert "tool_choice" not in raw
+    payload = json.loads(captured[0].content.decode("utf-8"))
+    assert "tool_choice" not in payload
+    assert "tools" not in payload
+    assert "toolConfig" not in payload
 
 
 @pytest.mark.asyncio
 async def test_xai_chat_create_has_no_tool_choice(recorded_dir: Path) -> None:
     payload = load_xai_fixture(recorded_dir.parent, "ok")
-    seen: list[ProviderRequest] = []
+    create_kwargs: list[dict[str, Any]] = []
 
-    def factory(req: ProviderRequest) -> ReplayChat:
-        seen.append(req)
-        return ReplayChat(payload)
+    class _ChatStub:
+        def create(self, **kwargs: Any) -> ReplayChat:
+            create_kwargs.append(kwargs)
+            return ReplayChat(payload)
 
     config = load_app_config(None)
-    prov = XAIProvider(SecretStr("xai-test"), config, chat_factory=factory)
+
+    async def _noop_close() -> None:
+        return None
+
+    prov = XAIProvider(SecretStr("xai-test"), config)
+    prov._client = SimpleNamespace(chat=_ChatStub(), close=_noop_close)
     async for _ in prov.stream(_provider_request("xai")):
         pass
     await prov.aclose()
-    assert len(seen) == 1
-    assert seen[0].output_schema is None
+    assert len(create_kwargs) == 1
+    assert "tools" not in create_kwargs[0]
+    assert "tool_choice" not in create_kwargs[0]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("grpc_status", "error_kind"),
+    [
+        ("INTERNAL", "server"),
+        ("UNAUTHENTICATED", "auth"),
+        ("RESOURCE_EXHAUSTED", "rate_limit"),
+    ],
+)
+async def test_xai_grpc_error_mapping(grpc_status: str, error_kind: str) -> None:
+    payload = {"grpc_status": grpc_status, "chunks": []}
+    config = load_app_config(None)
+    prov = XAIProvider(SecretStr("xai-test"), config, chat_factory=lambda _: ReplayChat(payload))
+    with pytest.raises(ProviderError) as excinfo:
+        async for _ in prov.stream(_provider_request("xai")):
+            pass
+    await prov.aclose()
+    assert excinfo.value.kind == error_kind
 
 
 @pytest.mark.asyncio

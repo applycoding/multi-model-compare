@@ -20,8 +20,8 @@
     {% endfor %}
     </div>
   </fieldset>
-  <label>Judge
-    <select name="judge" id="judge-select">
+  <label class="judge-field">Judge
+    <select name="judge" id="judge-select" class="judge-select">
       <option value="none">none</option>
       {% for item in models %}
       <option value="{{ item.spec.key }}" {% if item.spec.key == default_judge %}selected{% endif %}>{{ item.spec.display_name }}</option>

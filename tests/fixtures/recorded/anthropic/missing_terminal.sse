@@ -4,6 +4,9 @@ data: {"type":"message_start","message":{"id":"msg_synthetic_01","type":"message
 event: content_block_start
 data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
 
-event: error
-data: {"type":"error","error":{"type":"api_error","message":"synthetic stream error"}}
+event: content_block_delta
+data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello from synthetic Anthropic fixture."}}
+
+event: content_block_stop
+data: {"type":"content_block_stop","index":0}
 

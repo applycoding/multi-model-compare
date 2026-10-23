@@ -133,7 +133,7 @@ Five jobs on `ubuntu-24.04`: gitleaks + ruff, mypy, unit/contract/scenario tests
 
 ## Tutorial
 
-Step-by-step chapters: [`docs/tutorial/`](docs/tutorial/) (git tags `stage-00` … `stage-14`). See also [applycoding.com](https://applycoding.com).
+Step-by-step chapters: [`docs/tutorial/`](docs/tutorial/). See also [applycoding.com](https://applycoding.com).
 
 ## Limitations
 
