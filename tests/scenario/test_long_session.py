@@ -617,5 +617,9 @@ async def test_long_scenario(scenario_ctx: ScenarioCtx, caplog, monkeypatch, tmp
     if os.environ.get("MMC_UPDATE_GOLDEN") == "1":
         GOLDEN_PATH.write_text(json.dumps(normalized, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     else:
+        if not GOLDEN_PATH.is_file():
+            pytest.fail(
+                f"Missing {GOLDEN_PATH.name}; commit the golden file or set MMC_UPDATE_GOLDEN=1 locally to regenerate"
+            )
         golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
         assert normalized == golden

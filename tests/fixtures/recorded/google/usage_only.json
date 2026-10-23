@@ -1,0 +1,2 @@
+{"usageMetadata":{"promptTokenCount":4,"totalTokenCount":4}}
+{"candidates":[{"content":{"parts":[{"text":"after usage"}],"role":"model"},"finishReason":"STOP"}],"usageMetadata":{"promptTokenCount":4,"candidatesTokenCount":3,"totalTokenCount":7}}

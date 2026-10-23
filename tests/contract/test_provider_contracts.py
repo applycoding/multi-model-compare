@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 from pathlib import Path
 from typing import Any
@@ -187,4 +188,40 @@ async def test_http_errors_map(status: int, kind: str) -> None:
             pass
     assert exc.value.kind == kind
     await prov.aclose()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("vendor", ["anthropic", "openai", "google"])
+async def test_hung_stream_mock_transport_times_out(vendor: str, recorded_dir: Path) -> None:
+    hang = asyncio.Event()
+
+    async def hang_handler_httpx2(request: httpx2.Request) -> httpx2.Response:
+        await asyncio.wait_for(hang.wait(), timeout=30)
+        return httpx2.Response(200, content=b"")
+
+    async def hang_handler_httpx(request: httpx.Request) -> httpx.Response:
+        await asyncio.wait_for(hang.wait(), timeout=30)
+        return httpx.Response(200, content=b"")
+
+    req = _provider_request(vendor)
+
+    async def consume() -> None:
+        if vendor == "anthropic":
+            client = httpx2.AsyncClient(transport=httpx2.MockTransport(hang_handler_httpx2))
+            prov = AnthropicProvider(SecretStr("sk-ant-test"), http_client=client)
+        elif vendor == "openai":
+            client = httpx2.AsyncClient(transport=httpx2.MockTransport(hang_handler_httpx2))
+            prov = OpenAIProvider(SecretStr("sk-proj-test"), http_client=client)
+        else:
+            client = httpx.AsyncClient(transport=httpx.MockTransport(hang_handler_httpx))
+            prov = GoogleProvider(SecretStr("AIza-test"), httpx_async_client=client)
+        try:
+            async for _ in prov.stream(req):
+                pass
+        finally:
+            await prov.aclose()
+            await client.aclose()
+
+    with pytest.raises((asyncio.TimeoutError, ProviderError)):
+        await asyncio.wait_for(consume(), timeout=2.0)
 

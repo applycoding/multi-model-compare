@@ -7,7 +7,7 @@ import math
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING
 
-from mmc.config.schemas import MockBehavior
+from mmc.config.schemas import MockBehavior, MockOptions
 from mmc.judge.parser import parse_verdict
 from mmc.judge.schema_builder import verdict_json_schema, verdict_model
 from mmc.providers.base import (
@@ -53,6 +53,7 @@ _VOCAB = [
 # Test injection points
 mock_gate_barrier: asyncio.Barrier | None = None
 mock_in_flight_counter: list[int] = []
+mock_stream_aclose_log: list[str] = []
 
 
 def _mock_request_id(model_id: str, prompt: str) -> str:
@@ -83,7 +84,23 @@ class MockProvider(Provider):
         behavior: MockBehavior = opts.behavior
         prompt = req.user
         words = opts.output_words
+        tag = req.request_tag
 
+        try:
+            async for event in self._stream_events(req, behavior, prompt, words, opts, tag):
+                yield event
+        finally:
+            mock_stream_aclose_log.append(f"{behavior}:{tag}")
+
+    async def _stream_events(
+        self,
+        req: ProviderRequest,
+        behavior: MockBehavior,
+        prompt: str,
+        words: int,
+        opts: MockOptions,
+        tag: str,
+    ) -> AsyncIterator[StreamEvent]:
         if behavior == "error":
             raise ProviderError(opts.error_kind, opts.error_message)
 
@@ -195,10 +212,7 @@ class MockProvider(Provider):
                 yield TextDelta(text=part + (" " if i + size < len(words) else ""))
                 emitted += 1
 
-    def _usage(self, prompt: str, words: int, opts: object) -> ProviderUsage:
-        from mmc.config.schemas import MockOptions
-
-        assert isinstance(opts, MockOptions)
+    def _usage(self, prompt: str, words: int, opts: MockOptions) -> ProviderUsage:
         if opts.fixed_usage:
             inp, out = opts.fixed_usage
             return ProviderUsage(
