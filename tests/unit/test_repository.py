@@ -8,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 
 from mmc.config.loader import load_app_config
 from mmc.core.results import AnswerResult, CostTotal
+from mmc.honesty import apply_profile_honesty
 from mmc.records import RunRecord
 from mmc.storage.repository import RunRepository
 
@@ -37,7 +38,7 @@ def _minimal_record(run_id: str, stepping_clock) -> RunRecord:
 
 
 def test_save_get_roundtrip(repo: RunRepository, stepping_clock, id_factory) -> None:
-    rec = _minimal_record(id_factory(), stepping_clock)
+    rec = apply_profile_honesty(_minimal_record(id_factory(), stepping_clock))
     repo.save(rec)
     got = repo.get(rec.id)
     assert got == rec

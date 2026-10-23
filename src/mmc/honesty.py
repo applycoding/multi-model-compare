@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from decimal import Decimal
 from typing import Literal
 
@@ -57,3 +58,18 @@ def apply_profile_honesty(record: RunRecord) -> RunRecord:
             "pricing_disclosure": "example_pricing_mock",
         }
     )
+
+
+def honesty_summary_from_record(record: RunRecord) -> tuple[PricingDisclosure | Literal["unknown"], bool, Decimal]:
+    honest = apply_profile_honesty(record)
+    scores_mock = bool(honest.judge and honest.judge.scores_mock)
+    return honest.pricing_disclosure, scores_mock, honest.total.subtotal_usd
+
+
+def honesty_summary_from_record_json(record_json: str) -> tuple[PricingDisclosure | Literal["unknown"], bool, Decimal]:
+    data = json.loads(record_json)
+    if "profile" not in data:
+        total_raw = data.get("total", {}).get("subtotal_usd", "0")
+        return "unknown", False, Decimal(str(total_raw))
+    record = RunRecord.model_validate(data)
+    return honesty_summary_from_record(record)

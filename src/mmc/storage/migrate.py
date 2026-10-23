@@ -20,11 +20,34 @@ def _stored_schema_version(conn: Connection) -> int | None:
     return int(row[0])
 
 
+def _sync_honesty_summaries(conn: Connection) -> None:
+    if not _table_has_column(conn, "run_summaries", "pricing_disclosure"):
+        return
+    from mmc.honesty import honesty_summary_from_record_json
+
+    rows = conn.execute(text("SELECT id, record_json FROM runs")).fetchall()
+    for run_id, record_json in rows:
+        disclosure, scores_mock, subtotal = honesty_summary_from_record_json(record_json)
+        conn.execute(
+            text(
+                "UPDATE run_summaries SET pricing_disclosure = :d, scores_mock = :s, "
+                "total_known_cost_usd = :t WHERE run_id = :id"
+            ),
+            {
+                "d": disclosure,
+                "s": "true" if scores_mock else "false",
+                "t": str(subtotal),
+                "id": run_id,
+            },
+        )
+
+
 def _migrate_v1_to_v2(conn: Connection) -> None:
     if not _table_has_column(conn, "run_summaries", "pricing_disclosure"):
         conn.execute(text("ALTER TABLE run_summaries ADD COLUMN pricing_disclosure TEXT NOT NULL DEFAULT 'live'"))
     if not _table_has_column(conn, "run_summaries", "scores_mock"):
         conn.execute(text("ALTER TABLE run_summaries ADD COLUMN scores_mock TEXT NOT NULL DEFAULT 'false'"))
+    _sync_honesty_summaries(conn)
     conn.execute(text("DELETE FROM schema_meta"))
     conn.execute(text("INSERT INTO schema_meta (version) VALUES (2)"))
 
@@ -35,9 +58,10 @@ def migrate_schema(engine: Engine) -> None:
         if stored is None:
             conn.execute(text("INSERT INTO schema_meta (version) VALUES (:v)"), {"v": SCHEMA_VERSION})
             return
-        if stored == SCHEMA_VERSION:
-            return
         if stored == 1 and SCHEMA_VERSION == 2:
             _migrate_v1_to_v2(conn)
+            return
+        if stored == SCHEMA_VERSION:
+            _sync_honesty_summaries(conn)
             return
         raise RuntimeError(f"unsupported database schema version {stored}; expected {SCHEMA_VERSION}")

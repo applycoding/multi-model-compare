@@ -10,6 +10,8 @@ from mmc.config.schemas import JudgeSettings, PriceEntry, Rubric
 from mmc.core.results import AnswerResult, CostTotal
 from mmc.judge.schemas import JudgeOutcome
 
+SummaryPricingDisclosure = Literal["live", "example_pricing_mock", "unknown"]
+
 RunStatus = Literal["completed", "no_contestants", "cancelled"]
 
 
@@ -42,5 +44,5 @@ class RunSummary(BaseModel):
     status: RunStatus
     total_known_cost_usd: Decimal
     cost_flags: list[str]
-    pricing_disclosure: Literal["live", "example_pricing_mock"] = "live"
+    pricing_disclosure: SummaryPricingDisclosure = "live"
     scores_mock: bool = False

@@ -8,6 +8,7 @@ from sqlalchemy import func
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, col, select
 
+from mmc.honesty import apply_profile_honesty
 from mmc.records import RunRecord, RunSummary
 
 
@@ -58,7 +59,7 @@ class RunRepository:
             row = session.get(RunRow, run_id)
             if row is None:
                 return None
-            return RunRecord.model_validate_json(row.record_json)
+            return apply_profile_honesty(RunRecord.model_validate_json(row.record_json))
 
     def list(self, *, limit: int = 50, offset: int = 0, q: str | None = None) -> list[RunSummary]:
         from mmc.storage.tables import RunSummaryRow
@@ -101,7 +102,7 @@ class RunRepository:
         with Session(self._engine) as session:
             rows = session.exec(select(RunRow).order_by(RunRow.id)).all()
             for row in rows:
-                yield RunRecord.model_validate_json(row.record_json)
+                yield apply_profile_honesty(RunRecord.model_validate_json(row.record_json))
 
     def delete(self, run_id: str) -> bool:
         from mmc.storage.tables import RunRow, RunSummaryRow
