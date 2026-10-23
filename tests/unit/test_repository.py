@@ -48,9 +48,7 @@ def test_save_get_roundtrip(repo: RunRepository, stepping_clock, id_factory) -> 
         assert RunRecord.model_validate_json(row.record_json) == rec
 
 
-def test_get_applies_profile_honesty_for_mock_profile(
-    repo: RunRepository, stepping_clock, id_factory
-) -> None:
+def test_get_applies_profile_honesty_for_mock_profile(repo: RunRepository, stepping_clock, id_factory) -> None:
     rec = _minimal_record(id_factory(), stepping_clock)
     repo.save(rec)
     got = repo.get(rec.id)
