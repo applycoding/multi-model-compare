@@ -9,6 +9,7 @@
     <legend>Models</legend>
     <div class="model-grid-inner">
     {% for item in models %}
+    {% if not item.judge_only %}
     <label class="model-option">
       <input type="checkbox" name="models" value="{{ item.spec.key }}"
         {% if item.spec.key in default_contestants %}checked{% endif %}
@@ -17,6 +18,7 @@
       <span class="model-name">{{ item.spec.display_name }}</span>
       {% if not item.available %}<span class="badge needs-key">{{ item.skip_reason }}</span>{% endif %}
     </label>
+    {% endif %}
     {% endfor %}
     </div>
   </fieldset>

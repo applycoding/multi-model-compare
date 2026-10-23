@@ -7,7 +7,7 @@ import sys
 
 
 def main() -> int:
-    print("record_fixtures: stub — run locally with live keys per PLAN.md §7", file=sys.stderr)
+    print("record_fixtures: stub - run locally with live keys per PLAN.md §7", file=sys.stderr)
     return 2
 
 

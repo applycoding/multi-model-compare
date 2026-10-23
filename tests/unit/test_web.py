@@ -28,6 +28,14 @@ def test_csp_on_index(client: TestClient) -> None:
     assert r.headers.get("content-security-policy") == CSP
 
 
+def test_index_hides_mock_judge_from_contestants(client: TestClient) -> None:
+    r = client.get("/")
+    assert r.status_code == 200
+    html = r.text
+    assert 'name="models" value="mock:mock-judge"' not in html
+    assert 'name="judge"' in html and 'value="mock:mock-judge"' in html
+
+
 def test_api_run_with_csrf(client: TestClient) -> None:
     token = client.get("/api/csrf").json()["csrf_token"]
     r = client.post(
@@ -36,4 +44,9 @@ def test_api_run_with_csrf(client: TestClient) -> None:
         headers={"X-CSRF-Token": token},
     )
     assert r.status_code == 201
-    assert len(r.json()["answers"]) == 4
+    body = r.json()
+    assert len(body["answers"]) == 4
+    for ans in body["answers"]:
+        timing = ans.get("timing") or {}
+        assert timing.get("ttft_ms", 0) > 0
+        assert timing.get("total_ms", 0) > 0

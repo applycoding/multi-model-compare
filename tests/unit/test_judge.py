@@ -40,7 +40,7 @@ async def test_same_vendor_excluded(registry, stepping_clock) -> None:
     )
     assert out.status == "ok"
     assert True
-    # default mock judge vendor is mock, not google — all four judged
+    # default mock judge vendor is mock, not google; all four judged
     assert len(out.scores) == 4
 
 

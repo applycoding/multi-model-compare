@@ -23,6 +23,9 @@ from mmc.providers.base import (
 if TYPE_CHECKING:
     from mmc.config.schemas import Rubric
 
+# Per-chunk delay so mock runs report nonzero measured TTFT/total ms in the UI.
+_MOCK_CHUNK_DELAY_S = 0.012
+
 _VOCAB = [
     "alpha",
     "beta",
@@ -160,6 +163,7 @@ class MockProvider(Provider):
 
         if behavior == "stall":
             if text:
+                await asyncio.sleep(_MOCK_CHUNK_DELAY_S)
                 yield TextDelta(text=text.split()[0] if text else "word")
             await asyncio.Event().wait()
             return
@@ -209,6 +213,7 @@ class MockProvider(Provider):
                 break
             part = " ".join(words[i : i + size])
             if part:
+                await asyncio.sleep(_MOCK_CHUNK_DELAY_S)
                 yield TextDelta(text=part + (" " if i + size < len(words) else ""))
                 emitted += 1
 
@@ -261,5 +266,6 @@ class MockProvider(Provider):
         parse_verdict(raw, set(labels), criteria, 600)
         opts = req.spec.mock
         usage = self._usage(req.user, 0, opts) if opts else None
+        await asyncio.sleep(_MOCK_CHUNK_DELAY_S)
         yield TextDelta(text=raw)
         yield StreamEnd(outcome="ok", finish_reason="stop", request_id=rid, usage=usage)

@@ -25,7 +25,8 @@ async def index(request: Request) -> HTMLResponse:
     models = []
     for m in config.models:
         ok, reason = registry.availability(m)
-        models.append({"spec": m, "available": ok, "skip_reason": reason})
+        judge_only = m.mock is not None and m.mock.behavior == "judge"
+        models.append({"spec": m, "available": ok, "skip_reason": reason, "judge_only": judge_only})
     return _templates(request).TemplateResponse(
         request,
         "index.html",
