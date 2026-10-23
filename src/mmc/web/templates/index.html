@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="profile">Profile: <strong>{{ profile }}</strong> (set via MMC_PROFILE)</p>
+<form id="compare-form" method="post" action="/runs">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label>Prompt<textarea name="prompt" rows="6" required></textarea></label>
+  <fieldset>
+    <legend>Models</legend>
+    {% for item in models %}
+    <label>
+      <input type="checkbox" name="models" value="{{ item.spec.key }}"
+        {% if item.spec.key in default_contestants %}checked{% endif %}
+        {% if not item.available %}disabled{% endif %}
+        data-vendor="{{ item.spec.vendor }}">
+      {{ item.spec.display_name }}
+      {% if not item.available %}<span class="badge">skipped: {{ item.skip_reason }}</span>{% endif %}
+    </label>
+    {% endfor %}
+  </fieldset>
+  <label>Judge
+    <select name="judge" id="judge-select">
+      <option value="none">none</option>
+      {% for item in models %}
+      <option value="{{ item.spec.key }}" {% if item.spec.key == default_judge %}selected{% endif %}>{{ item.spec.display_name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <p id="vendor-disclosure">Will be sent to: <span id="vendor-list"></span></p>
+  <label>Temperature <input name="temperature" type="number" step="0.1" min="0" max="2"></label>
+  <label>Max tokens <input name="max_output_tokens" type="number" min="1"></label>
+  <label>Timeout (s) <input name="timeout_s" type="number" step="0.1"></label>
+  <label><input type="checkbox" name="allow_self_judging" value="true"> Allow self-judging</label>
+  <label>Seed <input name="seed" type="number"></label>
+  <button type="submit" id="submit-btn">Run comparison</button>
+</form>
+{% endblock %}

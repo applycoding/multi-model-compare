@@ -1,0 +1,54 @@
+<table class="results">
+  <thead>
+    <tr>
+      <th>Label</th><th>Model</th><th>Status</th><th>TTFT ms</th><th>Total ms</th>
+      <th>In tok</th><th>Out tok</th><th>Cost USD</th>
+      {% for c in record.rubric.criteria %}<th>{{ c.key }}</th>{% endfor %}
+      <th>Overall</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for ans in record.answers %}
+    {% set label = namespace(value='') %}
+    {% if record.judge %}
+      {% for l, k in record.judge.label_map.items() %}
+        {% if k == ans.model.key %}{% set label.value = l %}{% endif %}
+      {% endfor %}
+    {% endif %}
+    <tr>
+      <td>{{ label.value }}</td>
+      <td>{{ ans.model.display_name }}</td>
+      <td>{{ ans.status }}
+        {% if ans.partial %}<span class="badge">partial</span>{% endif %}
+        {% if ans.status == 'incomplete' %}<span class="badge">incomplete</span>{% endif %}
+        {% if record.judge and ans.model.key in record.judge.excluded %}
+          <span class="badge">not judged: {{ record.judge.excluded[ans.model.key] }}</span>
+        {% elif record.judge and ans.model.key in record.judge.scores and record.judge.scores[ans.model.key].self_judged %}
+          <span class="badge">self-judged</span>
+        {% endif %}
+      </td>
+      <td>{{ ans.timing.ttft_ms if ans.timing and ans.timing.ttft_ms is not none else '' }}</td>
+      <td>{{ ans.timing.total_ms if ans.timing else '' }}</td>
+      <td>{{ ans.usage.input_tokens if ans.usage else '' }}</td>
+      <td>{{ ans.usage.output_tokens if ans.usage else '' }}</td>
+      <td>
+        {% if ans.cost and ans.cost.total_usd is not none %}
+          ${{ ans.cost.total_usd }}{% if ans.cost.status == 'estimated' %} est.{% endif %}
+          {% if ans.cost.basis == 'from' %}<span class="badge">from</span>{% endif %}
+        {% else %}n/a{% endif %}
+      </td>
+      {% if record.judge and ans.model.key in record.judge.scores %}
+        {% for c in record.rubric.criteria %}
+          <td>{{ record.judge.scores[ans.model.key].criteria[c.key].score }}</td>
+        {% endfor %}
+        <td>{{ record.judge.scores[ans.model.key].overall }}</td>
+      {% else %}
+        {% for c in record.rubric.criteria %}<td></td>{% endfor %}
+        <td></td>
+      {% endif %}
+    </tr>
+    <tr><td colspan="20"><pre class="answer">{% if ans.text %}{{ ans.text }}{% else %}(empty answer){% endif %}</pre></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p>Total: ${{ record.total.subtotal_usd }}{% if record.total.estimated %} est.{% endif %}{% if record.total.unknown_count %} + {{ record.total.unknown_count }} unknown{% endif %}</p>

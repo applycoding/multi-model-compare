@@ -1,0 +1,7 @@
+body { font-family: system-ui, sans-serif; margin: 1rem 2rem; max-width: 1100px; }
+header { display: flex; justify-content: space-between; align-items: baseline; }
+table.results { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+table.results th, table.results td { border: 1px solid #ccc; padding: 0.35rem 0.5rem; text-align: left; }
+pre.answer { white-space: pre-wrap; background: #f6f6f6; padding: 0.5rem; }
+.badge { font-size: 0.75rem; background: #eee; padding: 0.1rem 0.3rem; border-radius: 3px; }
+.profile { color: #555; }

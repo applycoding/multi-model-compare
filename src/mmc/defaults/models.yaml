@@ -1,0 +1,172 @@
+providers:
+  anthropic:
+    env_var: ANTHROPIC_API_KEY
+  openai:
+    env_var: OPENAI_API_KEY
+  google:
+    env_var: GEMINI_API_KEY
+  xai:
+    env_var: XAI_API_KEY
+    reasoning_tokens_additive: false
+  mock:
+    env_var: null
+
+defaults:
+  max_output_tokens: 1024
+  temperature: 0.2
+  timeout_s: 60
+
+limits:
+  max_prompt_chars: 32000
+  max_prompt_bytes: 131072
+  max_body_bytes: 262144
+  max_output_tokens: 32768
+  timeout_s_min: 0.1
+  timeout_s_max: 300
+  run_deadline_s: 900
+  max_concurrent_runs: 2
+  shutdown_grace_s: 30
+
+judge:
+  allow_self_judging: false
+  include_incomplete: false
+  max_retries: 2
+  timeout_s: 120
+  temperature: 0.0
+  output_tokens_base: 512
+  output_tokens_per_cell: 200
+  output_tokens_cap: 16384
+  rationale_max_chars: 600
+  redact_terms:
+    - Claude
+    - Anthropic
+    - GPT
+    - ChatGPT
+    - OpenAI
+    - Gemini
+    - Google
+    - Grok
+    - xAI
+
+models:
+  - key: anthropic:claude-opus-5-5
+    provider: anthropic
+    vendor: anthropic
+    model_id: claude-opus-5-5
+    display_name: Claude Opus 5.5
+    supports_temperature: false
+  - key: anthropic:claude-sonnet-5-5
+    provider: anthropic
+    vendor: anthropic
+    model_id: claude-sonnet-5-5
+    display_name: Claude Sonnet 5.5
+    supports_temperature: false
+  - key: anthropic:claude-haiku-5-5
+    provider: anthropic
+    vendor: anthropic
+    model_id: claude-haiku-5-5
+    display_name: Claude Haiku 5.5
+    supports_temperature: false
+  - key: openai:gpt-6-astra
+    provider: openai
+    vendor: openai
+    model_id: gpt-6-astra
+    display_name: GPT-6 Astra
+    supports_temperature: true
+  - key: openai:gpt-6.1-sol
+    provider: openai
+    vendor: openai
+    model_id: gpt-6.1-sol
+    display_name: GPT-6.1 Sol
+    supports_temperature: true
+  - key: openai:gpt-6-luna
+    provider: openai
+    vendor: openai
+    model_id: gpt-6-luna
+    display_name: GPT-6 Luna
+    supports_temperature: true
+  - key: google:gemini-4-argon
+    provider: google
+    vendor: google
+    model_id: gemini-4-argon
+    display_name: Gemini 4 Argon
+    supports_temperature: true
+  - key: google:gemini-3.8-flash
+    provider: google
+    vendor: google
+    model_id: gemini-3.8-flash
+    display_name: Gemini 3.8 Flash
+    supports_temperature: true
+  - key: google:gemini-3.5-flash-lite
+    provider: google
+    vendor: google
+    model_id: gemini-3.5-flash-lite
+    display_name: Gemini 3.5 Flash Lite
+    supports_temperature: true
+  - key: xai:grok-4.7
+    provider: xai
+    vendor: xai
+    model_id: grok-4.7
+    display_name: Grok 4.7
+    supports_temperature: true
+  - key: mock:mock-claude
+    provider: mock
+    vendor: anthropic
+    model_id: mock-claude
+    display_name: Mock Claude
+    supports_temperature: true
+    mock:
+      behavior: ok
+      output_words: 60
+  - key: mock:mock-gpt
+    provider: mock
+    vendor: openai
+    model_id: mock-gpt
+    display_name: Mock GPT
+    supports_temperature: true
+    mock:
+      behavior: ok
+      output_words: 60
+  - key: mock:mock-gemini
+    provider: mock
+    vendor: google
+    model_id: mock-gemini
+    display_name: Mock Gemini
+    supports_temperature: true
+    mock:
+      behavior: ok
+      output_words: 60
+  - key: mock:mock-grok
+    provider: mock
+    vendor: xai
+    model_id: mock-grok
+    display_name: Mock Grok
+    supports_temperature: true
+    mock:
+      behavior: ok
+      output_words: 60
+  - key: mock:mock-judge
+    provider: mock
+    vendor: mock
+    model_id: mock-judge
+    display_name: Mock Judge
+    supports_temperature: true
+    mock:
+      behavior: judge
+      fixed_usage: [1000, 200]
+
+profiles:
+  mock:
+    contestants:
+      - mock:mock-claude
+      - mock:mock-gpt
+      - mock:mock-gemini
+      - mock:mock-grok
+    judge: mock:mock-judge
+  live:
+    contestants:
+      - anthropic:claude-sonnet-5-5
+      - openai:gpt-6.1-sol
+      - google:gemini-3.8-flash
+      - xai:grok-4.7
+    judge: google:gemini-4-argon
