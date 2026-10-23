@@ -31,8 +31,10 @@ def compute_cost(
     in_price = entry.input_per_mtok
     out_price = entry.output_per_mtok
     notes: list[str] = []
+    long_context_tier = False
     if entry.long_context and usage.input_tokens > entry.long_context.above_input_tokens:
         tier = "long_context"
+        long_context_tier = True
         in_price = entry.long_context.input_per_mtok
         out_price = entry.long_context.output_per_mtok
         notes.append("long-context tier (estimated for Grok >200k)")
@@ -44,7 +46,7 @@ def compute_cost(
     if token_estimated:
         notes.append("estimated tokens")
     status = "known"
-    if token_estimated or billing_estimated or entry.basis == "from":
+    if token_estimated or billing_estimated or entry.basis == "from" or long_context_tier:
         status = "estimated"
     input_usd = _q(Decimal(usage.input_tokens) * in_price / Decimal(1_000_000))
     output_usd = _q(Decimal(usage.output_tokens) * out_price / Decimal(1_000_000))

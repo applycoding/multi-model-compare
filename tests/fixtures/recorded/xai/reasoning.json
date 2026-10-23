@@ -1,0 +1,18 @@
+{
+  "chunks": [
+    {
+      "response": {
+        "id": "resp_synthetic_xai_reasoning",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 8,
+          "completion_tokens": 10,
+          "reasoning_tokens": 25,
+          "total_tokens": 43
+        }
+      },
+      "chunk": { "content": "Answer with reasoning tokens billed conservatively." }
+    }
+  ],
+  "reasoning_tokens_additive": false
+}

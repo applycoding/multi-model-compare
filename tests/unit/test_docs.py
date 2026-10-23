@@ -1,26 +1,29 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 
 def test_docker_run_loopback_in_readme() -> None:
     text = Path("README.md").read_text(encoding="utf-8")
-    assert "127.0.0.1:8000:8000" in text or Path("docs/tutorial/14-docker-and-ci.md").exists()
+    assert "127.0.0.1:8000:8000" in text
+    tutorial = Path("docs/tutorial/14-docker-and-ci.md").read_text(encoding="utf-8")
+    assert "127.0.0.1:8000:8000" in tutorial
 
 
 def test_dockerignore_env() -> None:
     content = Path(".dockerignore").read_text(encoding="utf-8")
     assert ".env" in content
+    assert ".env.*" in content
 
 
-def test_ci_sha_pins_when_present() -> None:
+def test_ci_sha_pins() -> None:
     ci = Path(".github/workflows/ci.yml")
-    if not ci.exists():
-        return
+    assert ci.is_file()
     text = ci.read_text(encoding="utf-8")
     assert "permissions:" in text
     assert "contents: read" in text
-    import re
-
-    for match in re.finditer(r"uses:\s+\S+@([0-9a-f]{40})", text):
-        assert len(match.group(1)) == 40
+    for line in text.splitlines():
+        if "uses:" not in line:
+            continue
+        assert re.search(r"@[0-9a-f]{40}\b", line), f"unpinned action: {line.strip()}"

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 import socket
 import subprocess
 import sys
@@ -20,6 +21,27 @@ EXPECTED_OVERALL: dict[str, Decimal] = {
     "D": Decimal("4.25"),
 }
 
+_SCRUB_KEYS = (
+    "ANTHROPIC_API_KEY",
+    "OPENAI_API_KEY",
+    "GEMINI_API_KEY",
+    "XAI_API_KEY",
+    "GOOGLE_API_KEY",
+    "ANTHROPIC_BASE_URL",
+    "OPENAI_BASE_URL",
+    "GOOGLE_GEMINI_BASE_URL",
+    "GEMINI_BASE_URL",
+    "XAI_API_HOST",
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "ALL_PROXY",
+    "all_proxy",
+    "NO_PROXY",
+    "no_proxy",
+)
+
 
 def _free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -37,9 +59,8 @@ def mmc_server(tmp_path_factory) -> Iterator[str]:
     env["MMC_DB_PATH"] = str(db)
     env["MMC_TOKEN_ESTIMATOR"] = "chars"
     env["OTEL_SDK_DISABLED"] = "true"
-    for key in list(env):
-        if key.endswith("_API_KEY") or "PROXY" in key:
-            env.pop(key, None)
+    for key in _SCRUB_KEYS:
+        env.pop(key, None)
     mmc_bin = Path(sys.executable).parent / "mmc"
     proc = subprocess.Popen(
         [str(mmc_bin), "serve", "--port", str(port)],
@@ -87,25 +108,49 @@ def page_with_guard(page: Page, aborted_nonlocal: list[str]) -> Page:
 def test_smoke_flow(page_with_guard: Page, mmc_server: str, aborted_nonlocal: list[str]) -> None:
     page = page_with_guard
     page.goto(f"{mmc_server}/")
-    expect(page.locator("#vendor-disclosure")).to_contain_text("anthropic")
-    expect(page.locator("#vendor-disclosure")).to_contain_text("openai")
-    expect(page.locator("#vendor-disclosure")).to_contain_text("google")
-    expect(page.locator("#vendor-disclosure")).to_contain_text("xai")
-    expect(page.locator("#vendor-disclosure")).to_contain_text("mock")
+    expect(page.locator("#vendor-disclosure")).to_contain_text("Mock mode: nothing is sent to any provider")
     page.fill('textarea[name="prompt"]', "e2e smoke prompt")
     page.fill('input[name="seed"]', "42")
     page.click('button[type="submit"]')
     page.wait_for_url("**/runs/*")
-    page.locator("table.results tbody tr")
     status_cells = page.locator("table.results tbody tr td:nth-child(3)")
-    ok_count = sum(1 for i in range(status_cells.count()) if "ok" in status_cells.nth(i).inner_text())
-    assert ok_count >= 4
+    ok_count = sum(1 for i in range(status_cells.count()) if status_cells.nth(i).inner_text().strip().startswith("ok"))
+    assert ok_count == 4
+    scores: dict[str, Decimal] = {}
+    labels_seen: list[str] = []
+    for row in page.locator("table.results tbody tr").all():
+        cells = row.locator("td")
+        if cells.count() < 5:
+            continue
+        lbl = cells.nth(0).inner_text().strip()
+        if lbl not in ("A", "B", "C", "D"):
+            continue
+        labels_seen.append(lbl)
+        overall = cells.nth(-1).inner_text().strip()
+        if overall:
+            scores[lbl] = Decimal(overall)
+    assert sorted(labels_seen) == ["A", "B", "C", "D"]
+    for lbl, expected in EXPECTED_OVERALL.items():
+        assert scores[lbl] == expected
     cost_cells = page.locator("table.results tbody tr td:nth-child(8)")
-    import re
-
-    for i in range(min(4, cost_cells.count())):
+    for i in range(4):
         text = cost_cells.nth(i).inner_text()
         assert re.match(r"^\$\d+\.\d{6}", text.strip().split()[0])
     page.goto(f"{mmc_server}/history")
     expect(page.locator("ul li")).to_have_count(1, timeout=5000)
+    run_id = page.locator("ul li a").first.get_attribute("href").split("/")[-1]
+    export_resp = page.request.get(f"{mmc_server}/export/runs.json")
+    assert export_resp.ok
+    payload = export_resp.json()
+    assert payload["schema_version"] == 1
+    assert any(r["id"] == run_id for r in payload["runs"])
+    page.goto(f"{mmc_server}/runs/{run_id}")
+    csrf = page.request.get(f"{mmc_server}/api/csrf").json()["csrf_token"]
+    delete_resp = page.request.delete(
+        f"{mmc_server}/api/runs/{run_id}",
+        headers={"X-CSRF-Token": csrf},
+    )
+    assert delete_resp.status == 204
+    page.goto(f"{mmc_server}/history")
+    expect(page.locator("ul li")).to_have_count(0, timeout=5000)
     assert aborted_nonlocal == []

@@ -27,8 +27,8 @@
           <span class="badge">self-judged</span>
         {% endif %}
       </td>
-      <td>{{ ans.timing.ttft_ms if ans.timing and ans.timing.ttft_ms is not none else '' }}</td>
-      <td>{{ ans.timing.total_ms if ans.timing else '' }}</td>
+      <td>{{ ans.timing.ttft_ms | format_seconds_ms if ans.timing else '' }}</td>
+      <td>{{ ans.timing.total_ms | format_seconds_ms if ans.timing else '' }}</td>
       <td>{{ ans.usage.input_tokens if ans.usage else '' }}</td>
       <td>{{ ans.usage.output_tokens if ans.usage else '' }}</td>
       <td>

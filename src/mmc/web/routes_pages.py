@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 
 from mmc.core.request import RequestValidationError, RunRequest, resolve_request
 from mmc.core.supervisor import Busy
+from mmc.export import to_csv, to_json
 from mmc.web.security import get_csrf_token
 
 router = APIRouter()
@@ -137,3 +138,46 @@ async def clear_history(request: Request, csrf_token: str = Form("")) -> Redirec
         return RedirectResponse("/", status_code=403)
     request.app.state.repo.clear()
     return RedirectResponse("/history", status_code=303)
+
+
+@router.get("/runs/{run_id}/export.json")
+async def export_run_json(run_id: str, request: Request) -> Response:
+    record = request.app.state.repo.get(run_id)
+    if record is None:
+        return Response(status_code=404)
+    from datetime import UTC, datetime
+
+    body = to_json([record], datetime.now(UTC))
+    return Response(
+        content=body,
+        media_type="application/json",
+        headers={"Content-Disposition": f'attachment; filename="{run_id}.json"'},
+    )
+
+
+@router.get("/runs/{run_id}/export.csv")
+async def export_run_csv(run_id: str, request: Request) -> Response:
+    record = request.app.state.repo.get(run_id)
+    if record is None:
+        return Response(status_code=404)
+    body = to_csv([record])
+    return Response(
+        content=body,
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{run_id}.csv"'},
+    )
+
+
+@router.get("/export/runs.json")
+async def export_all_json(request: Request) -> Response:
+    from datetime import UTC, datetime
+
+    records = list(request.app.state.repo.iter_all())
+    body = to_json(records, datetime.now(UTC))
+    return Response(content=body, media_type="application/json")
+
+
+@router.get("/export/runs.csv")
+async def export_all_csv(request: Request) -> Response:
+    records = list(request.app.state.repo.iter_all())
+    return Response(content=to_csv(records), media_type="text/csv")

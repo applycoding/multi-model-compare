@@ -1,22 +1,21 @@
-# 08 Llm As Judge
+# 08 LLM-as-judge
 
 ## Goal
-Build mmc incrementally (chapter 08).
+Label shuffling, rubric JSON schema, retries, and verdict parsing.
 
-## You'll build
-Modules listed in PLAN.md section 11 row 08.
+## What you will have at the end of this chapter
+Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 08.
 
-## Files touched
-See PLAN.md file layout.
-
-## Key concepts
-Multi-model compare with mock-first testing.
-
-## Code walkthrough
-Work through the repository at tag `stage-08`.
+## Steps
+1. Read the modules listed for chapter 08 in `PLAN.md`.
+2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
+3. Compare your tree with git tag `stage-08`.
 
 ## Checkpoint
-Run the checkpoint command from PLAN.md section 11 for chapter 08.
+Follow PLAN.md section 11 for chapter 08.
+
+## Docker note
+When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
 
 ## Git tag
 `stage-08`

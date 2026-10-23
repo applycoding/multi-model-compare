@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from datetime import date
 from decimal import Decimal
+from pathlib import Path
+
+import pytest
+import yaml
 
 from mmc.config.loader import load_app_config
 from mmc.core.pricing import compute_cost, sum_costs
@@ -20,21 +24,48 @@ def _usage(inp: int, out: int) -> TokenUsage:
     )
 
 
-def test_half_microdollar_boundary() -> None:
-    config = load_app_config(None)
-    # gpt-6-luna output is $0.50/M: one token -> 0.0000005 -> 0.000001
+def test_half_microdollar_boundary(tmp_path: Path) -> None:
+    import shutil
+    from importlib.resources import files
+
+    defaults = files("mmc.defaults")
+    for name in ("models.yaml", "pricing.yaml", "rubric.yaml"):
+        shutil.copy(defaults.joinpath(name), tmp_path / name)
+    pricing = yaml.safe_load((tmp_path / "pricing.yaml").read_text(encoding="utf-8"))
+    pricing["entries"].append(
+        {
+            "model_key": "mock:half-micro",
+            "input_per_mtok": "0.50",
+            "output_per_mtok": "0.50",
+            "basis": "exact",
+            "effective_from": "2026-01-01",
+            "source_url": "https://github.com/applycoding/multi-model-compare",
+            "retrieved_on": "2026-10-23",
+        }
+    )
+    (tmp_path / "pricing.yaml").write_text(yaml.dump(pricing), encoding="utf-8")
+    models = yaml.safe_load((tmp_path / "models.yaml").read_text(encoding="utf-8"))
+    models["models"].append(
+        {
+            "key": "mock:half-micro",
+            "provider": "mock",
+            "vendor": "openai",
+            "model_id": "half-micro",
+            "display_name": "Half Micro",
+            "supports_temperature": True,
+            "mock": {"behavior": "ok", "output_words": 1},
+        }
+    )
+    (tmp_path / "models.yaml").write_text(yaml.dump(models), encoding="utf-8")
+    config = load_app_config(tmp_path)
     cost_out = compute_cost("openai:gpt-6-luna", _usage(0, 1), False, config.pricing, date(2026, 10, 23))
     assert cost_out.output_usd == Decimal("0.000001")
-    cost2 = compute_cost(
-        "openai:gpt-6-luna",
-        _usage(1, 1),
-        False,
-        config.pricing,
-        date(2026, 10, 23),
-    )
-    assert cost2.input_usd == Decimal("0.000000")
-    assert cost2.output_usd == Decimal("0.000001")
-    assert cost2.total_usd == Decimal("0.000001")
+    half_in = compute_cost("mock:half-micro", _usage(1, 0), False, config.pricing, date(2026, 10, 23))
+    half_out = compute_cost("mock:half-micro", _usage(0, 1), False, config.pricing, date(2026, 10, 23))
+    assert half_in.input_usd == Decimal("0.000001")
+    assert half_out.output_usd == Decimal("0.000001")
+    combined = compute_cost("mock:half-micro", _usage(1, 1), False, config.pricing, date(2026, 10, 23))
+    assert combined.total_usd == Decimal("0.000002")
 
 
 def test_exactly_twelve_real_pricing_entries() -> None:
@@ -67,7 +98,41 @@ def test_grok_long_context_tier() -> None:
     base = compute_cost("xai:grok-4.7", _usage(200_000, 100), False, config.pricing, date(2026, 10, 23))
     high = compute_cost("xai:grok-4.7", _usage(200_001, 100), False, config.pricing, date(2026, 10, 23))
     assert base.price and base.price.tier == "base"
+    assert base.status == "known"
     assert high.price and high.price.tier == "long_context"
+    assert high.status == "estimated"
+    total = sum_costs([base, high])
+    assert total.estimated is True
+
+
+def test_flash_effective_boundaries() -> None:
+    config = load_app_config(None)
+    dec31 = config.pricing.lookup("google:gemini-3.8-flash", date(2026, 12, 31))
+    jan1 = config.pricing.lookup("google:gemini-3.8-flash", date(2027, 1, 1))
+    assert dec31 and jan1
+    assert dec31.input_per_mtok == Decimal("0.75")
+    assert jan1.input_per_mtok == Decimal("1.50")
+
+
+def test_overlapping_pricing_ranges_rejected(tmp_path: Path) -> None:
+    import shutil
+    from importlib.resources import files
+
+    from mmc.config.yaml_loader import ConfigError
+
+    defaults = files("mmc.defaults")
+    for name in ("models.yaml", "pricing.yaml", "rubric.yaml"):
+        shutil.copy(defaults.joinpath(name), tmp_path / name)
+    pricing = (tmp_path / "pricing.yaml").read_text(encoding="utf-8")
+    dup = pricing.replace(
+        "effective_from: 2027-01-01",
+        "effective_from: 2026-10-01",
+        1,
+    )
+    (tmp_path / "pricing.yaml").write_text(dup, encoding="utf-8")
+    with pytest.raises((ConfigError, ValueError), match="overlap"):
+        load_app_config(tmp_path)
+
 
 
 def test_haiku_from_basis() -> None:

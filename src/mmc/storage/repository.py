@@ -99,23 +99,29 @@ class RunRepository:
                 yield RunRecord.model_validate_json(row.record_json)
 
     def delete(self, run_id: str) -> bool:
-        from mmc.storage.tables import RunRow
+        from mmc.storage.tables import RunRow, RunSummaryRow
 
         with Session(self._engine) as session:
             row = session.get(RunRow, run_id)
             if row is None:
                 return False
+            summary = session.get(RunSummaryRow, run_id)
+            if summary is not None:
+                session.delete(summary)
+                session.flush()
             session.delete(row)
             session.commit()
             return True
 
     def clear(self) -> int:
-        from mmc.storage.tables import RunRow
+        from sqlmodel import delete
+
+        from mmc.storage.tables import RunRow, RunSummaryRow
 
         with Session(self._engine) as session:
             rows = session.exec(select(RunRow)).all()
             count = len(rows)
-            for row in rows:
-                session.delete(row)
+            session.exec(delete(RunSummaryRow))
+            session.exec(delete(RunRow))
             session.commit()
             return count

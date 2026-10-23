@@ -4,7 +4,11 @@
   const vendorList = document.getElementById("vendor-list");
   const submitBtn = document.getElementById("submit-btn");
 
+  const disclosure = document.getElementById("vendor-disclosure");
+  const isMock = disclosure && disclosure.dataset.mock === "true";
+
   function updateVendors() {
+    if (isMock || !vendorList) return;
     const vendors = new Set();
     form.querySelectorAll('input[name="models"]:checked').forEach((el) => {
       vendors.add(el.dataset.vendor);
@@ -19,8 +23,10 @@
     vendorList.textContent = [...vendors].sort().join(", ");
   }
 
-  form.addEventListener("change", updateVendors);
-  updateVendors();
+  if (!isMock) {
+    form.addEventListener("change", updateVendors);
+    updateVendors();
+  }
 
   form.addEventListener("submit", (ev) => {
     ev.preventDefault();
@@ -50,6 +56,24 @@
         clearInterval(timer);
         submitBtn.disabled = false;
       });
+  });
+
+  document.querySelectorAll('form[action$="/delete"]').forEach((form) => {
+    form.addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      const fd = new FormData(form);
+      const token = String(fd.get("csrf_token") || "");
+      fetch(form.action, {
+        method: "POST",
+        headers: { "X-CSRF-Token": token },
+        body: fd,
+        redirect: "follow",
+      }).then((resp) => {
+        if (resp.ok || resp.redirected) {
+          window.location.href = "/history";
+        }
+      });
+    });
   });
 
   document.querySelectorAll("[data-copy]").forEach((btn) => {

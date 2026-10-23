@@ -31,3 +31,19 @@ def test_chars_mode_forced(estimator: TokenEstimator) -> None:
 def test_xai_billing_flag() -> None:
     config = load_app_config(None)
     assert config.providers["xai"].reasoning_tokens_additive is False
+    from datetime import date
+
+    from mmc.core.pricing import compute_cost
+    from mmc.core.results import TokenUsage
+
+    usage = TokenUsage(
+        input_tokens=10,
+        output_tokens=20,
+        reasoning_tokens=5,
+        total_tokens=35,
+        raw={},
+        input_source="provider",
+        output_source="provider",
+    )
+    cost = compute_cost("xai:grok-4.7", usage, True, config.pricing, date(2026, 10, 23))
+    assert cost.status == "estimated"

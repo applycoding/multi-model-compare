@@ -3,8 +3,9 @@
 <p class="profile">Profile: <strong>{{ profile }}</strong> (set via MMC_PROFILE)</p>
 <form id="compare-form" method="post" action="/runs">
   <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-  <label>Prompt<textarea name="prompt" rows="6" required></textarea></label>
-  <fieldset>
+  <label class="field-prompt" for="prompt-input">Prompt</label>
+  <textarea id="prompt-input" class="prompt-input" name="prompt" rows="8" required placeholder="Enter a prompt to compare across models…"></textarea>
+  <fieldset class="field-group">
     <legend>Models</legend>
     {% for item in models %}
     <label>
@@ -25,12 +26,20 @@
       {% endfor %}
     </select>
   </label>
-  <p id="vendor-disclosure">Will be sent to: <span id="vendor-list"></span></p>
-  <label>Temperature <input name="temperature" type="number" step="0.1" min="0" max="2"></label>
-  <label>Max tokens <input name="max_output_tokens" type="number" min="1"></label>
-  <label>Timeout (s) <input name="timeout_s" type="number" step="0.1"></label>
-  <label><input type="checkbox" name="allow_self_judging" value="true"> Allow self-judging</label>
-  <label>Seed <input name="seed" type="number"></label>
+  <p id="vendor-disclosure" data-mock="{% if profile == 'mock' %}true{% else %}false{% endif %}">
+    {% if profile == 'mock' %}
+    Mock mode: nothing is sent to any provider
+    {% else %}
+    Will be sent to: <span id="vendor-list"></span>
+    {% endif %}
+  </p>
+  <div class="params-grid">
+    <label>Temperature <input name="temperature" type="number" step="0.1" min="0" max="2"></label>
+    <label>Max tokens <input name="max_output_tokens" type="number" min="1"></label>
+    <label>Timeout (s) <input name="timeout_s" type="number" step="0.1"></label>
+    <label>Seed <input name="seed" type="number"></label>
+    <label class="checkbox-row"><input type="checkbox" name="allow_self_judging" value="true"> Allow self-judging</label>
+  </div>
   <button type="submit" id="submit-btn">Run comparison</button>
 </form>
 {% endblock %}

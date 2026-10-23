@@ -127,12 +127,9 @@ def _usage_from_response(response: Any, config: AppConfig) -> ProviderUsage | No
     total = getattr(usage, "total_tokens", None)
     additive = config.providers["xai"].reasoning_tokens_additive
     billable = completion
-    billing_estimated = False
-    if completion is not None:
-        if additive and reasoning is not None:
-            billable = completion + reasoning
-        else:
-            billing_estimated = reasoning is not None and reasoning > 0
+    billing_estimated = not additive
+    if completion is not None and additive and reasoning is not None:
+        billable = completion + reasoning
     return ProviderUsage(
         input_tokens=prompt,
         output_tokens=billable,

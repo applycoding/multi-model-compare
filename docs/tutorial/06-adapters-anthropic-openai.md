@@ -1,22 +1,21 @@
-# 06 Adapters Anthropic Openai
+# 06 Anthropic and OpenAI
 
 ## Goal
-Build mmc incrementally (chapter 06).
+SSE adapters with structured output for judging.
 
-## You'll build
-Modules listed in PLAN.md section 11 row 06.
+## What you will have at the end of this chapter
+Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 06.
 
-## Files touched
-See PLAN.md file layout.
-
-## Key concepts
-Multi-model compare with mock-first testing.
-
-## Code walkthrough
-Work through the repository at tag `stage-06`.
+## Steps
+1. Read the modules listed for chapter 06 in `PLAN.md`.
+2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
+3. Compare your tree with git tag `stage-06`.
 
 ## Checkpoint
-Run the checkpoint command from PLAN.md section 11 for chapter 06.
+Follow PLAN.md section 11 for chapter 06.
+
+## Docker note
+When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
 
 ## Git tag
 `stage-06`

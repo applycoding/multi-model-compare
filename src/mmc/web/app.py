@@ -12,7 +12,6 @@ from mmc import __version__
 from mmc.config.loader import load_app_config
 from mmc.core.supervisor import RunSupervisor
 from mmc.core.tokens import TokenEstimator
-from mmc.export import to_csv, to_json
 from mmc.logging_setup import configure_logging
 from mmc.providers.registry import ProviderRegistry
 from mmc.redact import Redactor
@@ -57,7 +56,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app.state.clock = SystemClock()
     templates_dir = Path(__file__).parent / "templates"
-    app.state.templates = Jinja2Templates(directory=str(templates_dir))
+    templates = Jinja2Templates(directory=str(templates_dir))
+
+    def _format_seconds_ms(ms: float | None) -> str:
+        if ms is None:
+            return ""
+        return f"{ms / 1000:.2f} s"
+
+    templates.env.filters["format_seconds_ms"] = _format_seconds_ms
+    app.state.templates = templates
     static_dir = Path(__file__).parent / "static"
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
     register_security_middleware(app, settings, config)
@@ -78,47 +85,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             )
         except Exception:
             return JSONResponse({"status": "error", "db": "error"}, status_code=503)
-
-    from fastapi import Request
-    from fastapi.responses import Response
-
-    @app.get("/runs/{run_id}/export.json")
-    async def export_run_json(run_id: str, request: Request) -> Response:
-        record = request.app.state.repo.get(run_id)
-        if record is None:
-            return Response(status_code=404)
-        from datetime import UTC, datetime
-
-        body = to_json([record], datetime.now(UTC))
-        return Response(
-            content=body,
-            media_type="application/json",
-            headers={"Content-Disposition": f'attachment; filename="{run_id}.json"'},
-        )
-
-    @app.get("/runs/{run_id}/export.csv")
-    async def export_run_csv(run_id: str, request: Request) -> Response:
-        record = request.app.state.repo.get(run_id)
-        if record is None:
-            return Response(status_code=404)
-        body = to_csv([record])
-        return Response(
-            content=body,
-            media_type="text/csv",
-            headers={"Content-Disposition": f'attachment; filename="{run_id}.csv"'},
-        )
-
-    @app.get("/export/runs.json")
-    async def export_all_json(request: Request) -> Response:
-        from datetime import UTC, datetime
-
-        records = list(request.app.state.repo.iter_all())
-        body = to_json(records, datetime.now(UTC))
-        return Response(content=body, media_type="application/json")
-
-    @app.get("/export/runs.csv")
-    async def export_all_csv(request: Request) -> Response:
-        records = list(request.app.state.repo.iter_all())
-        return Response(content=to_csv(records), media_type="text/csv")
 
     return app

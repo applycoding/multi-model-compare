@@ -3,7 +3,7 @@
 [![CI](https://github.com/applycoding/multi-model-compare/actions/workflows/ci.yml/badge.svg)](https://github.com/applycoding/multi-model-compare/actions/workflows/ci.yml)
 MIT · Python 3.13 · [uv](https://docs.astral.sh/uv/)
 
-Open-source **portfolio demo** (MIT) by Arpan Bom ([@applycoding](https://github.com/applycoding)): send one prompt to up to eight LLMs at once, compare answers with cost/latency/tokens, and score them with a structured-output judge. **Mock mode is the default** — no API keys required for development or CI.
+Open-source **portfolio demo** (MIT) by Arpan Bom ([@applycoding](https://github.com/applycoding)): send one prompt to up to eight LLMs at once, compare answers with cost/latency/tokens, and score them with a structured-output judge. **Mock mode is the default**; no API keys required for development or CI.
 
 ![Run results](docs/screenshots/run.png)
 
@@ -14,7 +14,7 @@ Open-source **portfolio demo** (MIT) by Arpan Bom ([@applycoding](https://github
 - Honest cost flags (`known` / `estimated` / `unknown`), latency (TTFT + total), and token provenance.
 - Versioned SQLite snapshots, history, export (JSON/CSV), and delete/clear.
 - Loopback web UI (Jinja2 + vanilla JS) and `mmc` CLI.
-- **Default profile `mock`** — CI and quickstart need no secrets.
+- **Default profile `mock`**: CI and quickstart need no secrets.
 
 ## Quickstart (mock, no keys)
 
@@ -33,7 +33,7 @@ cp .env.example .env
 uv run --env-file .env mmc serve
 ```
 
-Providers without a key are **skipped**. Live profile contestants: Claude Sonnet 5.5, GPT-6.1 Sol, Gemini 3.8 Flash, Grok 4.7; judge: Gemini 4 Argon (Gemini answers are not judged by default).
+Providers without a key are **skipped**. Live profile contestants: Claude Sonnet 5.5, GPT-6.1 Sol, Gemini 3.8 Flash, Grok 4.7; judge: Gemini 4 Argon (Gemini answers are not judged by default unless `allow_self_judging` is on).
 
 **Docker (local build only):**
 
@@ -59,7 +59,26 @@ flowchart LR
   SVC --> DB[("SQLite snapshots")]
 ```
 
-Package layout: `src/mmc/` — `config/`, `providers/`, `core/`, `judge/`, `storage/`, `web/`, `cli.py`.
+### Module map (`src/mmc/`)
+
+| Path | Role |
+|------|------|
+| `config/` | YAML loaders, models, pricing, rubric schemas |
+| `providers/` | Anthropic, OpenAI, Google, xAI, and mock streaming adapters |
+| `core/` | Request resolver, runner, pricing, tokens, supervisor |
+| `judge/` | Payload, parser, anonymised labels, structured verdict |
+| `storage/` | SQLite WAL, immutable `record_json` snapshots |
+| `service.py` | CompareService orchestration |
+| `export.py` | JSON/CSV export with CSV injection guards |
+| `cli.py` | `mmc` subcommands |
+| `web/` | FastAPI UI, CSRF, CSP, templates, static assets |
+| `disclosure.py` | Mock vs live vendor disclosure strings |
+
+### Mock behaviours (`providers/mock.py`)
+
+`ok`, `stall`, `gate`, `error`, `error_midstream`, `missing_terminal`, `no_usage`, `usage_only_chunks`, `empty`, `reasoning_only`, `refused`, `blocked`, `incomplete`, `judge`, `judge_bad_json_once`, `judge_bad_json_always` (deterministic text from prompt + model id).
+
+In **mock** profile the CLI and UI state: **Mock mode: nothing is sent to any provider** (no live vendor calls).
 
 ## Configuration
 
@@ -106,7 +125,7 @@ uv run ruff check . && uv run ruff format --check .
 uv run mypy src tests
 ```
 
-Recorded HTTP fixtures: maintainer script `scripts/record_fixtures.py` (not run in CI). Regenerate scenario golden: `MMC_UPDATE_GOLDEN=1` locally only.
+Synthetic contract fixtures live under `tests/fixtures/recorded/` (see README there). Maintainer capture: `scripts/record_fixtures.py` (not run in CI). UI screenshots: `uv run python scripts/screenshots.py` after `mmc serve` in mock mode. Regenerate scenario golden: `MMC_UPDATE_GOLDEN=1` locally only.
 
 ## CI
 

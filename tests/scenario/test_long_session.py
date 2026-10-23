@@ -4,7 +4,7 @@ import json
 import math
 import os
 import shutil
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from typing import Any
 
@@ -53,36 +53,34 @@ P14 = "=SUM(1,2)"
 P15 = "P15: includes mock-unpriced for unknown cost."
 P16 = P1
 
-JUDGE_ATTEMPT_COST = Decimal("0.001400")
-
-
 def _inp_tokens(prompt: str) -> int:
     return math.ceil(len(prompt) / 4)
 
 
-def _per_answer_cost(prompt: str, pricing_file: str = "pricing.yaml") -> Decimal:
-    from datetime import date
-
-    from mmc.core.pricing import compute_cost
-    from mmc.core.results import TokenUsage
-
-    config = load_app_config(FIXTURES, pricing_file=pricing_file)
-    usage = TokenUsage(
-        input_tokens=_inp_tokens(prompt),
-        output_tokens=60,
-        reasoning_tokens=None,
-        total_tokens=_inp_tokens(prompt) + 60,
-        raw={},
-        input_source="provider",
-        output_source="provider",
-    )
-    cost = compute_cost("mock:mock-gpt", usage, False, config.pricing, date(2026, 10, 23))
-    assert cost.total_usd is not None
-    return cost.total_usd
+_QUANT = Decimal("0.000001")
 
 
-P1_ANSWER_COST = _per_answer_cost(P1)
-P1_ANSWER_COST_V2 = _per_answer_cost(P1, pricing_file="pricing_v2.yaml")
+def _q(value: Decimal) -> Decimal:
+    return value.quantize(_QUANT, rounding=ROUND_HALF_UP)
+
+
+def _hand_answer_cost(prompt: str, input_per_mtok: Decimal, output_per_mtok: Decimal) -> Decimal:
+    inp = _inp_tokens(prompt)
+    in_cost = _q(Decimal(inp) * input_per_mtok / Decimal(1_000_000))
+    out_cost = _q(Decimal(60) * output_per_mtok / Decimal(1_000_000))
+    return in_cost + out_cost
+
+
+def _hand_judge_attempt_cost(input_per_mtok: Decimal, output_per_mtok: Decimal) -> Decimal:
+    in_cost = _q(Decimal(1000) * input_per_mtok / Decimal(1_000_000))
+    out_cost = _q(Decimal(200) * output_per_mtok / Decimal(1_000_000))
+    return in_cost + out_cost
+
+
+P1_ANSWER_COST = _hand_answer_cost(P1, Decimal("1"), Decimal("2"))
+P1_ANSWER_COST_V2 = _hand_answer_cost(P1, Decimal("2"), Decimal("4"))
+JUDGE_ATTEMPT_COST = _hand_judge_attempt_cost(Decimal("1"), Decimal("2"))
+JUDGE_ATTEMPT_COST_V2 = _hand_judge_attempt_cost(Decimal("2"), Decimal("4"))
 
 
 EXPECTED_STEPS: dict[int, dict[str, Any]] = {
@@ -287,8 +285,9 @@ def _assert_step(record: RunRecord, step: int, ctx: ScenarioCtx) -> None:
     if "answer_cost_vs_step1" in exp:
         mult = exp["answer_cost_vs_step1"]
         for ans in record.answers:
-            if ans.cost and ans.cost.total_usd:
-                assert ans.cost.total_usd == P1_ANSWER_COST * mult
+            assert ans.cost is not None
+            assert ans.cost.total_usd is not None
+            assert ans.cost.total_usd == P1_ANSWER_COST * mult
     if "contestant_count" in exp:
         assert len(record.answers) == exp["contestant_count"]
     if "prompt" in exp:

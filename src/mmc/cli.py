@@ -12,6 +12,7 @@ from mmc.config.loader import load_app_config
 from mmc.config.schemas import AppConfig
 from mmc.core.request import RequestValidationError, RunRequest, resolve_request
 from mmc.core.tokens import TokenEstimator
+from mmc.disclosure import cli_run_disclosure
 from mmc.export import to_csv, to_json
 from mmc.logging_setup import configure_logging
 from mmc.providers.registry import ProviderRegistry
@@ -114,10 +115,11 @@ def _cmd_run(
     registry = ProviderRegistry(config, settings)
     try:
         resolved = resolve_request(req, config, settings, redactor, registry)
-    except RequestValidationError:
+    except RequestValidationError as exc:
+        for field, msg in exc.errors:
+            print(f"error: {field}: {msg}", file=sys.stderr)
         return 2
-    vendors = ", ".join(resolved.vendors_contacted)
-    print(f"Sending prompt to: {vendors}", file=sys.stderr)
+    print(cli_run_disclosure(settings.profile, resolved.vendors_contacted), file=sys.stderr)
 
     async def _go() -> RunRecord:
         service = CompareService(
@@ -139,7 +141,20 @@ def _cmd_run(
         print(json.dumps(record.model_dump(mode="json"), indent=2))
     else:
         for ans in record.answers:
-            print(f"{ans.model.key}\t{ans.status}\t{ans.text[:80]}")
+            ttft = ans.timing.ttft_ms if ans.timing else None
+            total_ms = ans.timing.total_ms if ans.timing else None
+            cost_usd = ans.cost.total_usd if ans.cost and ans.cost.total_usd is not None else None
+            print(
+                f"{ans.model.key}\t{ans.status}\t"
+                f"ttft_ms={ttft}\ttotal_ms={total_ms}\tcost_usd={cost_usd}\t"
+                f"{ans.text[:80]}"
+            )
+        if record.judge:
+            for model_key, scores in sorted(record.judge.scores.items()):
+                crit = ",".join(f"{k}={v.score}" for k, v in sorted(scores.criteria.items()))
+                print(f"judge_score\t{model_key}\toverall={scores.overall}\t{crit}")
+            for excl, reason in sorted(record.judge.excluded.items()):
+                print(f"judge_excluded\t{excl}\t{reason}")
     return 0
 
 

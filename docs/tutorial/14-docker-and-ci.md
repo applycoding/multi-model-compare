@@ -1,22 +1,21 @@
-# 14 Docker And Ci
+# 14 Docker and CI
 
 ## Goal
-Build mmc incrementally (chapter 14).
+Container image, loopback publish `127.0.0.1:8000:8000`, and GitHub Actions CI.
 
-## You'll build
-Modules listed in PLAN.md section 11 row 14.
+## What you will have at the end of this chapter
+Working code on branch `cursor/build-mmc-d88a` matching PLAN.md section 11 row 14.
 
-## Files touched
-See PLAN.md file layout.
-
-## Key concepts
-Multi-model compare with mock-first testing.
-
-## Code walkthrough
-Work through the repository at tag `stage-14`.
+## Steps
+1. Read the modules listed for chapter 14 in `PLAN.md`.
+2. Run the checkpoint command from that row (unit, contract, or e2e tests as documented).
+3. Compare your tree with git tag `stage-14`.
 
 ## Checkpoint
-Run the checkpoint command from PLAN.md section 11 for chapter 14.
+Follow PLAN.md section 11 for chapter 14.
+
+## Docker note
+When examples use Docker, publish only on loopback: `-p 127.0.0.1:8000:8000`.
 
 ## Git tag
 `stage-14`

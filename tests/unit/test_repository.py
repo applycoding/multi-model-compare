@@ -64,6 +64,15 @@ def test_snapshot_immutable_after_save(repo: RunRepository, stepping_clock, id_f
     assert after.prompt == rec.prompt
 
 
+def test_delete_removes_run_and_summary(repo: RunRepository, stepping_clock, id_factory) -> None:
+    rec = _minimal_record(id_factory(), stepping_clock)
+    repo.save(rec)
+    assert repo.delete(rec.id) is True
+    assert repo.get(rec.id) is None
+    assert repo.list(limit=10) == []
+    assert repo.delete(rec.id) is False
+
+
 def test_list_newest_first(repo: RunRepository, stepping_clock, id_factory) -> None:
     r1 = _minimal_record(id_factory(), stepping_clock)
     r2 = _minimal_record(id_factory(), stepping_clock)
