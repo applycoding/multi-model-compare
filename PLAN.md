@@ -1,7 +1,7 @@
 # PLAN.md: multi-model-compare
 
 > Open-source portfolio demo (MIT) by **Arpan Bom** ([@applycoding](https://github.com/applycoding)), with a step-by-step tutorial on applycoding.com.
-> Plan date: 2026-10-23 (revised after review). Package name: `mmc`. Repo: `applycoding/multi-model-compare`. App version: `0.1.0`.
+> Plan date: 2026-10-23. Package name: `mmc`. Repo: `applycoding/multi-model-compare`. App version: `0.1.0`.
 
 ---
 
